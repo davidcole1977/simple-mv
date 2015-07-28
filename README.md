@@ -1,4 +1,4 @@
 # simple-mv
-A basic Javascript MV library
+A basic Javascript Model View library
 
 Coming soon...
