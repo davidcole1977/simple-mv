@@ -4,4 +4,4 @@
 
 > A basic Javascript Model View library
 
-Coming soon...
+This is very much work in progress and not anywhere near usable yet.
