@@ -24,7 +24,8 @@
             null,
             []
           ],
-          dummyValidatorFunction = function () {};
+          dummyValidatorFunction = function () {},
+          anotherDummyValidatorFunction = function () {};
 
       beforeEach(function () {
         validatorSet = new mvValidation.ValidatorSet();
@@ -40,12 +41,15 @@
 
       describe('prototype.setValidator', function () {
 
-        xit('sets a new validator function', function () {
-
+        it('sets a new validator function', function () {
+          validatorSet.setValidator('foo', dummyValidatorFunction);
+          expect(validatorSet.validators.foo).to.equal(dummyValidatorFunction);
         });
 
-        xit('overwrites an existing validator function', function () {
-
+        it('overwrites an existing validator function', function () {
+          validatorSet.validators.foo = dummyValidatorFunction;
+          validatorSet.setValidator('foo', anotherDummyValidatorFunction);
+          expect(validatorSet.validators.foo).to.equal(anotherDummyValidatorFunction);
         });
 
         it('throws an error when first argument is not a string', function () {

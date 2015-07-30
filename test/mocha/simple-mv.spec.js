@@ -10,6 +10,13 @@
   describe('simple-mv', function () {
 
     describe('Model', function () {
+      var everyThingExceptString = [
+            123,
+            {},
+            null,
+            [],
+            function () {}
+          ];
 
       it('exists', function () {
         expect(mv.Model).to.exist;
@@ -89,8 +96,14 @@
             expect(model.get.bind(model)).to.throw(Error);
           });
 
-          it('throws an error if the first argument is a number (not a string)', function () {
-            expect(model.get.bind(model, 200)).to.throw(Error);
+          it('throws an error if the first argument is not a string', function () {
+            everyThingExceptString.forEach(function(notAString) {
+              expect(model.get.bind(model, notAString)).to.throw(Error);
+            });
+          });
+
+          it('throws an error if the first argument is a string with zero length', function () {
+            expect(model.get.bind(model, '')).to.throw(Error);
           });
 
           it('throws an error if the key doesn\'t exist in data', function () {
@@ -106,6 +119,12 @@
             expect(model.data.foo.value).to.equal('bar');
           });
 
+          it('overrides the value of a previously set simple string data attribute', function () {
+            model.set('foo', 'bar');
+            model.set('foo', 'woo');
+            expect(model.data.foo.value).to.equal('woo');
+          });
+
           it('sets the data attribute value to null if no value argument is received', function () {
             model.set('foo');
             expect(model.data.foo.value).to.be.null;
@@ -116,7 +135,13 @@
           });
 
           it('throws an error if the first argument is not a string', function () {
-            expect(model.set.bind(model, 200)).to.throw(Error);
+            everyThingExceptString.forEach(function(notAString) {
+              expect(model.set.bind(model, notAString)).to.throw(Error);
+            });
+          });
+
+          it('throws an error if the first argument is a string with zero length', function () {
+            expect(model.set.bind(model, '')).to.throw(Error);
           });
 
         });
@@ -134,10 +159,9 @@
           });
 
           it('throws an error if the first argument is not a string', function () {
-            expect(model.delete.bind(model, 999)).to.throw(Error);
-            expect(model.delete.bind(model, [1,2,3])).to.throw(Error);
-            expect(model.delete.bind(model, {foo: 'bar'})).to.throw(Error);
-            expect(model.delete.bind(model, function () {})).to.throw(Error);
+            everyThingExceptString.forEach(function(notAString) {
+              expect(model.delete.bind(model, notAString)).to.throw(Error);
+            });
           });
 
           it('fails silently if attribute to be deleted does not exist', function () {
