@@ -1,15 +1,52 @@
 (function () {
+  'use strict';
 
   var expect = require('chai').expect,
       sinon = require('sinon'),
-      libDir = process.env.LIB_DIR || 'lib/',
-      modulePath = libDir + 'simple-helpers',
-      mvHelpers = require(modulePath);
+      utHelpers = require('../lib/unit-test-helpers.js'),
+      module = require(utHelpers.getModulePath('simple-helpers')),
 
-  describe('mv-helpers', function () {
+      referenceObj = {
+        foo: 'bar',
+        woo: 999,
+        moo: function () {},
+        hoo: {why: 42},
+        coo: ['wow', 'bow']
+      },
+      similarObj = {
+        foo: 'argh',
+        woo: 100000,
+        moo: function () { console.log('woo hoo'); },
+        hoo: {my: 'goodness'},
+        coo: [1,2,3,4,5,6]
+      },
+      disSimilarObj = {
+        foo: 100000,
+        woo: function () { console.log('woo hoo'); },
+        moo: {my: 'goodness'},
+        hoo: [1,2,3,4,5,6],
+        coo: 'argh'
+      },
+      longerObj = {
+        foo: 'argh',
+        woo: 100000,
+        moo: function () { console.log('woo hoo'); },
+        hoo: {my: 'goodness'},
+        coo: [1,2,3,4,5,6],
+        too: 'boo'
+      },
+      objWithDifferentKeys = {
+        foo: 'argh',
+        woo: 100000,
+        moo: function () { console.log('woo hoo'); },
+        hee: {my: 'goodness'},
+        cee: [1,2,3,4,5,6]
+      };
+
+  describe('simple-helpers', function () {
 
     describe('argumentsToArray()', function () {
-      var argumentsToArray = mvHelpers.argumentsToArray;
+      var argumentsToArray = module.argumentsToArray;
 
       it('converts function arguments to an array', function () {
         var testArgs;
@@ -26,43 +63,7 @@
     });
 
     describe('objectsAreSimilar()', function () {
-      var objectsAreSimilar = mvHelpers.objectsAreSimilar,
-          referenceObj = {
-            foo: 'bar',
-            woo: 999,
-            moo: function () {},
-            hoo: {why: 42},
-            coo: ['wow', 'bow']
-          },
-          similarObj = {
-            foo: 'argh',
-            woo: 100000,
-            moo: function () { console.log('woo hoo'); },
-            hoo: {my: 'goodness'},
-            coo: [1,2,3,4,5,6]
-          },
-          disSimilarObj = {
-            foo: 100000,
-            woo: function () { console.log('woo hoo'); },
-            moo: {my: 'goodness'},
-            hoo: [1,2,3,4,5,6],
-            coo: 'argh'
-          },
-          longerObj = {
-            foo: 'argh',
-            woo: 100000,
-            moo: function () { console.log('woo hoo'); },
-            hoo: {my: 'goodness'},
-            coo: [1,2,3,4,5,6],
-            too: 'boo'
-          },
-          objWithDifferentKeys = {
-            foo: 'argh',
-            woo: 100000,
-            moo: function () { console.log('woo hoo'); },
-            hee: {my: 'goodness'},
-            cee: [1,2,3,4,5,6]
-          };
+      var objectsAreSimilar = module.objectsAreSimilar;
 
       it('returns true for objects with the same parameter keys and types', function () {
         expect(objectsAreSimilar(referenceObj, similarObj)).to.be.true;

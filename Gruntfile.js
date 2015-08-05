@@ -20,6 +20,7 @@ module.exports = function(grunt) {
     jshint: {
       options: {
         expr: true,
+        node: true,
         ignores: ['test/coverage/**/*.js']
       },
       js: {
