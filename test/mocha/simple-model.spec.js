@@ -127,8 +127,11 @@
           expect(model.get('bar').foo).to.equal('bar');
         });
 
-        it('doesn\'t alter the stored value if validation fails', function () {
-
+        it('throws error and doesn\'t alter the stored value if validation fails', function () {
+          model.assignValidator('foo', 'isString');
+          model.set('foo', 'bar');
+          expect(model.set.bind(model, 'foo', 999)).to.throw(Error);
+          expect(model.get('foo')).to.equal('bar');
         });
 
         it('sets deeply nested value by keypath', function () {
