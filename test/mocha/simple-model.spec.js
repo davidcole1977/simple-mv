@@ -280,6 +280,12 @@
         });
       });
 
+      xdescribe('emitDatumEvent()', function () {
+        xit('stuff', function () {
+
+        });
+      });
+
       xdescribe('datum', function () {
 
         describe('isValid()', function () {
