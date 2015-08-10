@@ -4,12 +4,47 @@
   var expect = require('chai').expect,
       sinon = require('sinon'),
       utHelpers = require('../lib/unit-test-helpers.js'),
-      module = require(utHelpers.getModulePath('simple-model'));
+      module = require(utHelpers.getModulePath('simple-model')),
+      modelValidators = require(utHelpers.getModulePath('model-validators')),
+      isString = function (value) { return typeof value === 'string'; },
+      hasLengthOfFour = function (value) { return value.length === 4; },
+      hasLengthOfFourMsg = 'the length should be four',
+      isStringMsg = 'the value should be a string';
+
+  modelValidators.set({
+    name: 'isString',
+    isValid: isString,
+    message: isStringMsg
+  });
+
+  modelValidators.set({
+    name: 'hasLengthOfFour',
+    isValid: hasLengthOfFour,
+    message: hasLengthOfFourMsg
+  });
 
   describe('simple-model', function () {
     
     describe('create()', function () {
       xit('stuff', function () {
+
+      });
+
+      describe('options', function () {
+        xit('validationFailPreventsSet', function () {
+
+        });
+
+        xit('default data', function () {
+
+        });
+
+        xit('default validators', function () {
+
+        });
+      });
+
+      describe('custom parameters and methods', function () {
 
       });
     });
@@ -29,14 +64,14 @@
 
       describe('get()', function () {
         it('gets the value of a simple string data attribute', function () {
-          model.data.foo = {value: 'bar'};
+          model.data.foo = 'bar';
           expect(model.get('foo')).to.equal('bar');
         });
 
         it('altering a value after getting it leaves the stored version unaltered', function () {
           var datum;
 
-          model.data.foo = {value: {foo: 'bar'}};
+          model.data.foo = {foo: 'bar'};
           datum = model.get('foo');
           datum.foo = 999;
 
@@ -69,18 +104,18 @@
       describe('set()', function () {
         it('sets the value of a simple string data attribute', function () {
           model.set('foo', 'bar');
-          expect(model.data.foo.value).to.equal('bar');
+          expect(model.data.foo).to.equal('bar');
         });
 
         it('overrides the value of a previously set simple string data attribute', function () {
           model.set('foo', 'bar');
           model.set('foo', 'woo');
-          expect(model.data.foo.value).to.equal('woo');
+          expect(model.data.foo).to.equal('woo');
         });
 
         it('sets the data attribute value to null if no value argument is received', function () {
           model.set('foo');
-          expect(model.data.foo.value).to.be.null;
+          expect(model.data.foo).to.be.null;
         });
 
         it('altering the variable originally passed as a value doesn\'t change the stored value', function () {
@@ -92,15 +127,15 @@
           expect(model.get('bar').foo).to.equal('bar');
         });
 
-        xit('doesn\'t alter the stored value if validation fails', function () {
+        it('doesn\'t alter the stored value if validation fails', function () {
 
         });
 
-        xit('sets deeply nested value by keypath', function () {
+        it('sets deeply nested value by keypath', function () {
 
         });
 
-        xit('sets deeply nested value by keypath, creating intermediate levels of ancestry if necessary', function () {
+        it('sets deeply nested value by keypath, creating intermediate levels of ancestry if necessary', function () {
 
         });
 
@@ -119,12 +154,20 @@
         });
       });
 
-      describe('setValidator()', function () {
-        xit('assigns a single validator object to a datum', function () {
-
+      describe('assignValidator()', function () {
+        it('assigns a single validator object to a datum keypath', function () {
+          model.assignValidator('foo', 'isString');
+          expect(model.validatorsMap.foo.isString).to.contain.all.keys(['isValid', 'message']);
         });
 
-        xit('assigns multiple validator objects to a datum', function () {
+        it('assigns multiple validator objects to a datum keypath (separate statements)', function () {
+          model.assignValidator('foo', 'isString');
+          model.assignValidator('foo', 'hasLengthOfFour');
+          expect(model.validatorsMap.foo.isString).to.contain.all.keys(['isValid', 'message']);
+          expect(model.validatorsMap.foo.hasLengthOfFour).to.contain.all.keys(['isValid', 'message']);
+        });
+
+        xit('assigns multiple validator objects to a datum keypath (second argument is array)', function () {
 
         });
 
@@ -136,7 +179,7 @@
 
         });
 
-        xit('throws an error if datum with specified key doesn\'t exist', function () {
+        xit('throws an error if datum with specified keypath doesn\'t exist', function () {
 
         });
 
@@ -145,24 +188,44 @@
         });
       });
 
-      describe('(Datum???) isValid()', function () {
-        xit('returns true if value passes validation rule (one validator is set)', function () {
+      describe('isValid()', function () {
+        it('returns true if value passes validation rule (one validator is set)', function () {
+          model.set('foo', 'bar');
+          model.assignValidator('foo', 'isString');
+          expect(model.isValid('foo')).to.be.true;
+        });
+
+        it('returns false if value fails validation rule (one validator is set)', function () {
+          model.set('foo', 999);
+          model.assignValidator('foo', 'isString');
+          expect(model.isValid('foo')).to.be.false;
+        });
+
+        it('returns true if value passes all validation rules (multiple valiators are set)', function () {
+          model.set('foo', 'baar');
+          model.assignValidator('foo', 'hasLengthOfFour');
+          model.assignValidator('foo', 'isString');
+          expect(model.isValid('foo')).to.be.true;
+        });
+
+        it('returns false if value fails one or more validation rules (multiple valiators are set)', function () {
+          model.set('foo', 'bar');
+          model.assignValidator('foo', 'hasLengthOfFour');
+          model.assignValidator('foo', 'isString');
+          expect(model.isValid('foo')).to.be.false;
+        });
+
+        xit('validates deeply nested value by keypath (success)', function () {
 
         });
 
-        xit('returns false if value fails validation rule (one validator is set)', function () {
+        xit('validates deeply nested value by keypath (failure)', function () {
 
         });
 
-        xit('returns true if value passes all validation rules (multiple valiators are set)', function () {
+        xit('validates arguments', function () {
 
         });
-
-        xit('returns false if value fails one or more validation rules (multiple valiators are set)', function () {
-
-        });
-
-        // there can be multiple validation rules – forn isValid to return true, all rules have to pass
       });
 
       describe('getRawData()', function () {
@@ -212,6 +275,35 @@
         it('fails silently if attribute to be removed does not exist', function () {
           expect(model.remove.bind(model, 'fubar')).to.not.throw(Error);
         });
+      });
+
+      xdescribe('datum', function () {
+
+        describe('isValid()', function () {
+          it('validates datum (success)', function () {
+            model.set('foo', 'baar');
+            model.assignValidator('foo', 'hasLengthOfFour');
+            model.assignValidator('foo', 'isString');
+            expect(model.get('foo').isValid()).to.be.true;
+          });
+
+          it('validates datum (failure)', function () {
+            model.set('foo', 'bar');
+            model.assignValidator('foo', 'hasLengthOfFour');
+            model.assignValidator('foo', 'isString');
+            expect(model.get('foo').isValid()).to.be.false;
+          });
+
+          xit('validates deeply nested datum by keypath (success)', function () {
+
+          });
+
+          xit('validates deeply nested datum by keypath (failure)', function () {
+
+          });
+
+        });
+
       });
 
     });
