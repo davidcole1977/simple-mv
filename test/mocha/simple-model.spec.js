@@ -6,6 +6,7 @@
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-model')),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
+      modelSubs = require(utHelpers.getModulePath('model-subscriptions')),
       isString = function (value) { return typeof value === 'string'; },
       hasLengthOfFour = function (value) { return value.length === 4; },
       hasLengthOfFourMsg = 'the length should be four',
@@ -28,6 +29,14 @@
     describe('create()', function () {
       xit('stuff', function () {
 
+      });
+
+      it('model created has an ID attribute that is different from the previous model created', function () {
+        var model1 = module.create(),
+            model2 = module.create();
+
+        expect(model1.id).to.have.length.above(0);
+        expect(model1.id).to.not.equal(model2.id);
       });
 
       describe('options', function () {
@@ -280,39 +289,49 @@
         });
       });
 
-      xdescribe('emitDatumEvent()', function () {
-        xit('stuff', function () {
+      describe('emitDatumEvent()', function () {
+        var publishSpy;
+
+        beforeEach(function () {
+          publishSpy = sinon.spy(modelSubs, 'publish');
+        });
+
+        afterEach(function () {
+          modelSubs.publish.restore();
+        });
+
+        it('pubsub instance receives expected args when datum created using set()', function () {
+          var topicName = model.id + ':foo:create',
+              publishParams = {
+                value: 'bar',
+                parentModel: model
+              };
+
+          model.set('foo', 'bar');
+          expect(publishSpy.calledWith(topicName, publishParams)).to.be.true;
+        });
+
+        it('pubsub instance receives expected args when datum updated using set()', function () {
+          var topicName = model.id + ':foo:update',
+              publishParams = {
+                value: 'boo',
+                parentModel: model
+              };
+
+          model.set('foo', 'bar');
+          model.set('foo', 'boo');
+          expect(publishSpy.calledWith(topicName, publishParams)).to.be.true;
+        });
+
+        xit('other event types (eg. fail validation, include error details, validation type etc.', function () {
 
         });
       });
 
-      xdescribe('datum', function () {
-
-        describe('isValid()', function () {
-          it('validates datum (success)', function () {
-            model.set('foo', 'baar');
-            model.assignValidator('foo', 'hasLengthOfFour');
-            model.assignValidator('foo', 'isString');
-            expect(model.get('foo').isValid()).to.be.true;
-          });
-
-          it('validates datum (failure)', function () {
-            model.set('foo', 'bar');
-            model.assignValidator('foo', 'hasLengthOfFour');
-            model.assignValidator('foo', 'isString');
-            expect(model.get('foo').isValid()).to.be.false;
-          });
-
-          xit('validates deeply nested datum by keypath (success)', function () {
-
-          });
-
-          xit('validates deeply nested datum by keypath (failure)', function () {
-
-          });
+      xdescribe('emitModelEvent()', function () {
+        it('stuff', function () {
 
         });
-
       });
 
     });
