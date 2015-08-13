@@ -300,27 +300,45 @@
           modelSubs.publish.restore();
         });
 
-        it('pubsub instance receives expected args when datum created using set()', function () {
-          var topicName = model.id + ':foo:create',
-              publishParams = {
+        it('pubsub instance receives datum create and model update events with expected args when datum created using set()', function () {
+          var datumTopicName = model.id + ':foo:create',
+              modelTopicName = model.id + ':update',
+              datumPublishParams = {
                 value: 'bar',
                 parentModel: model
+              },
+              modelPublishParams = {
+                keypath: 'foo',
+                model: model
               };
 
           model.set('foo', 'bar');
-          expect(publishSpy.calledWith(topicName, publishParams)).to.be.true;
+
+          expect(publishSpy.calledWith(datumTopicName, datumPublishParams)).to.be.true;
+          expect(publishSpy.calledWith(modelTopicName, modelPublishParams)).to.be.true;
         });
 
-        it('pubsub instance receives expected args when datum updated using set()', function () {
-          var topicName = model.id + ':foo:update',
-              publishParams = {
+        it('pubsub instance receives datum update and model update events with expected args when datum updated using set()', function () {
+          var datumTopicName = model.id + ':foo:update',
+              modelTopicName = model.id + ':update',
+              datumPublishParams = {
                 value: 'boo',
                 parentModel: model
+              },
+              modelPublishParams = {
+                keypath: 'foo',
+                model: model
               };
 
           model.set('foo', 'bar');
           model.set('foo', 'boo');
-          expect(publishSpy.calledWith(topicName, publishParams)).to.be.true;
+
+          expect(publishSpy.calledWith(datumTopicName, datumPublishParams)).to.be.true;
+          expect(publishSpy.calledWith(modelTopicName, modelPublishParams)).to.be.true;
+        });
+
+        xit('ancestor keypath events / publish events when child keypath is updated', function () {
+
         });
 
         xit('other event types (eg. fail validation, include error details, validation type etc.', function () {
