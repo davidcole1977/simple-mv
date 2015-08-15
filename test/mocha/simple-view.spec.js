@@ -53,6 +53,38 @@
         });
       });
 
+      xdescribe('bind()', function () {
+        it('binds all model data to data parameter if a single argument (model object / id string) is received', function () {
+        
+        });
+
+        it('binds all model data to a named parameter if two arguments are received (model, parameter name)', function () {
+        
+        });
+
+        it('binds model datum to a named parameter if three arguments are received (model, datum, parameter name)', function () {
+        
+        });
+      });
+
+     xdescribe('addListener()', function () {
+        it('listen to model', function () {
+        
+        });
+
+        it('listen to model / event', function () {
+        
+        });
+
+        it('listen to model / datum', function () {
+        
+        });
+
+        it('listen to model / datum / event', function () {
+        
+        });
+      });
+
     });
 
   });
