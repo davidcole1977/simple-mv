@@ -127,6 +127,10 @@
           expect(model.data.foo).to.be.null;
         });
 
+        xit('returns without setting the datum value or emitting any update events if the value has not changed', function () {
+          
+        });
+
         it('altering the variable originally passed as a value doesn\'t change the stored value', function () {
           var original = {foo: 'bar'};
 
