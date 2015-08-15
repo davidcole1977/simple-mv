@@ -41,20 +41,6 @@
       });
     });
 
-    xdescribe('getModel', function () {
-      it('retrieves model by ID string', function () {
-
-      });
-
-      it('retrieves model by object reference', function () {
-
-      });
-
-      it('validates arguments', function () {
-
-      });
-    });
-
     describe('prototype methods', function () {
       var view, model;
 
@@ -83,18 +69,6 @@
             model.set('bar', 'car');
 
             view.bind(model);
-
-            expect(view.data).to.deep.equal({
-              foo: 'boo',
-              bar: 'car'
-            });
-          });
-
-          it('binds by model id string instead of model object reference', function () {
-            model.set('foo', 'boo');
-            model.set('bar', 'car');
-
-            view.bind(model.id);
 
             expect(view.data).to.deep.equal({
               foo: 'boo',
