@@ -42,12 +42,6 @@
     });
 
     describe('prototype methods', function () {
-      var view, model;
-
-      beforeEach(function () {
-        view = module.create();
-        model = sm.create();
-      });
 
       xdescribe('method()', function () {
         it('stuff', function () {
@@ -55,11 +49,20 @@
         });
       });
 
-      xdescribe('bind()', function () {
+      describe.only('bind()', function () {
+        var view, model, bindOptions;
 
-        describe('binding a whole single model to the view data (one argument: model object / ID string)', function () {
+        beforeEach(function () {
+          view = module.create();
+          model = sm.create();
+          bindOptions = {
+            model: model
+          };
+        });
+
+        describe('binding a whole single model to the view data (one argument: model object)', function () {
           it('view data reflects state of model with no data', function () {
-            view.bind(model);
+            view.bind(bindOptions);
 
             expect(view.data).to.deep.equal({});
           });
@@ -68,7 +71,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind(model);
+            view.bind(bindOptions);
 
             expect(view.data).to.deep.equal({
               foo: 'boo',
@@ -80,7 +83,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind(model);
+            view.bind(bindOptions);
 
             model.set('foo', 'hoo');
             model.set('bar', 'far');
@@ -92,9 +95,22 @@
           });
         });
 
-        xdescribe('binding a whole model to a named view data parameter (two arguments: model, parameter name) ', function () {
-          it('stuff', function () {
-          
+        describe('binding a whole model to a named view data parameter (two arguments: model, parameter name) ', function () {
+
+          xit('view data reflects state of model with no data', function () {
+
+          });
+
+          xit('view data reflects state of model with data', function () {
+
+          });
+
+          xit('view data updates correspondingly when model data updates', function () {
+
+          });
+
+          xit('arbitrary variable updates correspondingly when model data updates', function () {
+
           });
         });
 
