@@ -49,7 +49,7 @@
         });
       });
 
-      describe.only('bind()', function () {
+      describe('bind()', function () {
         var view, model, bindOptions;
 
         beforeEach(function () {
