@@ -6,7 +6,6 @@
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-model')),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
-      modelSubs = require(utHelpers.getModulePath('model-subscriptions')),
       isString = function (value) { return typeof value === 'string'; },
       hasLengthOfFour = function (value) { return value.length === 4; },
       hasLengthOfFourMsg = 'the length should be four',
@@ -297,39 +296,40 @@
         var publishSpy;
 
         beforeEach(function () {
-          publishSpy = sinon.spy(modelSubs, 'publish');
+          model = module.create();
+          publishSpy = sinon.spy(model.subsList, 'publish');
         });
 
         afterEach(function () {
-          modelSubs.publish.restore();
+          model.subsList.publish.restore();
         });
 
         it('pubsub instance receives datum create and model update events with expected args when datum created using set()', function () {
-          var datumTopicName = model.id + ':foo:create',
-              modelTopicName = model.id + ':update',
-              datumPublishParams = {
+          var datumPublishParams = {
+                eventName: 'create',
                 value: 'bar',
-                parentModel: model
+                model: model
               },
               modelPublishParams = {
+                eventName: 'update',
                 keypath: 'foo',
                 model: model
               };
 
           model.set('foo', 'bar');
 
-          expect(publishSpy.calledWith(datumTopicName, datumPublishParams)).to.be.true;
-          expect(publishSpy.calledWith(modelTopicName, modelPublishParams)).to.be.true;
+          expect(publishSpy.calledWith('foo', datumPublishParams)).to.be.true;
+          expect(publishSpy.calledWith('update', modelPublishParams)).to.be.true;
         });
 
         it('pubsub instance receives datum update and model update events with expected args when datum updated using set()', function () {
-          var datumTopicName = model.id + ':foo:update',
-              modelTopicName = model.id + ':update',
-              datumPublishParams = {
+          var datumPublishParams = {
+                eventName: 'update',
                 value: 'boo',
-                parentModel: model
+                model: model
               },
               modelPublishParams = {
+                eventName: 'update',
                 keypath: 'foo',
                 model: model
               };
@@ -337,8 +337,8 @@
           model.set('foo', 'bar');
           model.set('foo', 'boo');
 
-          expect(publishSpy.calledWith(datumTopicName, datumPublishParams)).to.be.true;
-          expect(publishSpy.calledWith(modelTopicName, modelPublishParams)).to.be.true;
+          expect(publishSpy.calledWith('foo', datumPublishParams)).to.be.true;
+          expect(publishSpy.calledWith('update', modelPublishParams)).to.be.true;
         });
 
         xit('ancestor keypath events / publish events when child keypath is updated', function () {
