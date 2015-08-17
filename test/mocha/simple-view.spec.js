@@ -50,20 +50,16 @@
       });
 
       describe('bind()', function () {
-        var view, model, bindOptions;
+        var view, model;
 
         beforeEach(function () {
           view = module.create();
           model = sm.create();
-          bindOptions = {
-            model: model
-          };
         });
 
-        describe('binding a whole single model to the view data (one argument: model object)', function () {
+        describe('binding a whole single model to the whole view data parameter', function () {
           it('view data reflects state of model with no data', function () {
-            view.bind(bindOptions);
-
+            view.bind({model: model});
             expect(view.data).to.deep.equal({});
           });
 
@@ -71,7 +67,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind(bindOptions);
+            view.bind({model: model});
 
             expect(view.data).to.deep.equal({
               foo: 'boo',
@@ -83,7 +79,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind(bindOptions);
+            view.bind({model: model});
 
             model.set('foo', 'hoo');
             model.set('bar', 'far');
@@ -95,32 +91,107 @@
           });
         });
 
-        describe('binding a whole model to a named view data parameter (two arguments: model, parameter name) ', function () {
+        describe('binding a whole model to a named view data parameter', function () {
+          it('view data reflects state of model with no data', function () {
+            view.bind({
+              model: model,
+              viewDatum: 'foo'
+            });
 
+            expect(view.data.foo).to.deep.equal({});
+          });
+
+          it('view data reflects state of model with data', function () {
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            view.bind({
+              model: model,
+              viewDatum: 'woo'
+            });
+
+            expect(view.data).to.deep.equal({
+              woo: {
+                foo: 'boo',
+                bar: 'car'
+              }
+            });
+          });
+
+          it('view data updates correspondingly when model data updates', function () {
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            view.bind({
+              model: model,
+              viewDatum: 'woo'
+            });
+
+            model.set('foo', 'hoo');
+            model.set('bar', 'far');
+
+            expect(view.data).to.deep.equal({
+              woo: {
+                foo: 'hoo',
+                bar: 'far'
+              }
+            });
+          });
+        });
+
+        describe('binding a named model datum to the whole view data parameter', function () {
+          it('view data reflects state of model with no data', function () {
+            view.bind({
+              model: model,
+              modelDatum: 'foo'
+            });
+
+            expect(view.data).to.deep.equal({});
+          });
+
+          xit('view data reflects state of model with data', function () {
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            view.bind({
+              model: model,
+              modelDatum: 'foo'
+            });
+
+            expect(view.data).to.deep.equal({
+              foo: 'boo'
+            });
+          });
+
+          xit('view data updates correspondingly when model data updates', function () {
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            view.bind({
+              model: model,
+              modelDatum: 'foo'
+            });
+
+            model.set('foo', 'hoo');
+            model.set('bar', 'far');
+
+            expect(view.data).to.deep.equal({
+              foo: 'hoo'
+            });
+          });
+        });
+
+        describe('binding a named model datum to a named view data parameter', function () {
           xit('view data reflects state of model with no data', function () {
 
           });
 
           xit('view data reflects state of model with data', function () {
-
+           
           });
 
           xit('view data updates correspondingly when model data updates', function () {
-
-          });
-
-          xit('arbitrary variable updates correspondingly when model data updates', function () {
-
-          });
-        });
-
-        // it('binds all model data to a named parameter if two arguments are received (model, parameter name)', function () {
-        
-        // });
-
-        xdescribe('binding a model datum to a named view data parameter (three arguments: model, datum, parameter namee) ', function () {
-          it('stuff', function () {
-          
+            
           });
         });
 

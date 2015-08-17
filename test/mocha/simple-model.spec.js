@@ -6,6 +6,8 @@
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-model')),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
+      GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
+      EVENT_TYPES = GLOBAL_CONFIG.EVENT_TYPES,
       isString = function (value) { return typeof value === 'string'; },
       hasLengthOfFour = function (value) { return value.length === 4; },
       hasLengthOfFourMsg = 'the length should be four',
@@ -292,7 +294,7 @@
         });
       });
 
-      describe('emitDatumEvent()', function () {
+      describe('emitEvent()', function () {
         var publishSpy;
 
         beforeEach(function () {
@@ -304,32 +306,20 @@
           model.subsList.publish.restore();
         });
 
-        it('pubsub instance receives datum create and model update events with expected args when datum created using set()', function () {
-          var datumPublishParams = {
-                eventName: 'create',
-                value: 'bar',
-                model: model
-              },
-              modelPublishParams = {
-                eventName: 'update',
+        it('pubsub instance receives datum create event with expected args when datum created using set()', function () {
+          var publishParams = {
                 keypath: 'foo',
                 model: model
               };
 
           model.set('foo', 'bar');
 
-          expect(publishSpy.calledWith('foo', datumPublishParams)).to.be.true;
-          expect(publishSpy.calledWith('update', modelPublishParams)).to.be.true;
+          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_CREATE, publishParams)).to.be.true;
+          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_CREATE + ':foo', publishParams)).to.be.true;
         });
 
-        it('pubsub instance receives datum update and model update events with expected args when datum updated using set()', function () {
-          var datumPublishParams = {
-                eventName: 'update',
-                value: 'boo',
-                model: model
-              },
-              modelPublishParams = {
-                eventName: 'update',
+        it('pubsub instance receives datum update event with expected args when datum updated using set()', function () {
+          var publishParams = {
                 keypath: 'foo',
                 model: model
               };
@@ -337,8 +327,36 @@
           model.set('foo', 'bar');
           model.set('foo', 'boo');
 
-          expect(publishSpy.calledWith('foo', datumPublishParams)).to.be.true;
-          expect(publishSpy.calledWith('update', modelPublishParams)).to.be.true;
+          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_UPDATE, publishParams)).to.be.true;
+          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_UPDATE + ':foo', publishParams)).to.be.true;
+        });
+
+        it('pubsub instance does not receive update event set() is called with existing value', function () {
+          model.set('foo', 'bar');
+          model.set('foo', 'bar');
+
+          expect(publishSpy.calledTwice).to.be.true;
+        });
+
+        it('pubsub instance receives datum remove event with expected args when datum updated using remove()', function () {
+          var publishParams = {
+                keypath: 'foo',
+                model: model
+              };
+
+          model.set('foo', 'bar');
+          model.remove('foo');
+
+          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_REMOVE, publishParams)).to.be.true;
+          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_REMOVE + ':foo', publishParams)).to.be.true;
+        });
+
+        xit('model initialise', function () {
+
+        });
+
+        xit('model remove / destroy', function () {
+
         });
 
         xit('ancestor keypath events / publish events when child keypath is updated', function () {
@@ -346,12 +364,6 @@
         });
 
         xit('other event types (eg. fail validation, include error details, validation type etc.', function () {
-
-        });
-      });
-
-      xdescribe('emitModelEvent()', function () {
-        it('stuff', function () {
 
         });
       });
