@@ -5,7 +5,3 @@
 > A basic Javascript Model View library
 
 This is very much work in progress and not anywhere near usable yet.
-
-### To do
-
-* simplify model events (publications), so that there are no separarate datum events, just model events – a datum event will be replaced with a model event, with an event type of 'datum-update' (or create, remove etc.), with an event object that contains everything needed.
