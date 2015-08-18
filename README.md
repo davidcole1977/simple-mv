@@ -8,4 +8,4 @@ This is very much work in progress and not anywhere near usable yet.
 
 ### To do
 
-* Tidy up the view.bind() method. It's FUGLY. Will probably need top be separarated into some separate functions, which might be able to be shared with view.receiveBindEvent()
+* Tidy up the view.bind() method. It's FUGLY. Will likely need top be separarated into some separate functions, which might be able to be shared with view.receiveBindEvent()
