@@ -146,10 +146,12 @@
               modelDatum: 'foo'
             });
 
-            expect(view.data).to.deep.equal({});
+            expect(view.data).to.deep.equal({
+              foo: null
+            });
           });
 
-          xit('view data reflects state of model with data', function () {
+          it('view data reflects state of model with data', function () {
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
@@ -163,7 +165,7 @@
             });
           });
 
-          xit('view data updates correspondingly when model data updates', function () {
+          it('view data updates correspondingly when model data updates', function () {
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
@@ -182,16 +184,49 @@
         });
 
         describe('binding a named model datum to a named view data parameter', function () {
-          xit('view data reflects state of model with no data', function () {
+          it('view data reflects state of model with no data', function () {
+            view.bind({
+              model: model,
+              modelDatum: 'foo',
+              viewDatum: 'woo'
+            });
 
+            expect(view.data).to.deep.equal({
+              woo: null
+            });
           });
 
-          xit('view data reflects state of model with data', function () {
-           
+          it('view data reflects state of model with data', function () {
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            view.bind({
+              model: model,
+              modelDatum: 'foo',
+              viewDatum: 'woo'
+            });
+
+            expect(view.data).to.deep.equal({
+              woo: 'boo'
+            });
           });
 
-          xit('view data updates correspondingly when model data updates', function () {
-            
+          it('view data updates correspondingly when model data updates', function () {
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            view.bind({
+              model: model,
+              modelDatum: 'foo',
+              viewDatum: 'woo'
+            });
+
+            model.set('foo', 'hoo');
+            model.set('bar', 'far');
+
+            expect(view.data).to.deep.equal({
+              woo: 'hoo'
+            });
           });
         });
 
@@ -200,13 +235,6 @@
           
           });
         });
-
-        // it('binds model datum to a named parameter if three arguments are received (model, datum, parameter name)', function () {
-        
-        // });
-
-        
-
         
       });
 

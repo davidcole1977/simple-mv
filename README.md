@@ -8,4 +8,4 @@ This is very much work in progress and not anywhere near usable yet.
 
 ### To do
 
-* simplify model events (publications), so that there are no separarate datum events, just model events – a datum event will be replaced with a model event, with an event type of 'datum-update' (or create, remove etc.), with an event object that contains everything needed.
+* Tidy up the view.bind() method. It's FUGLY. Will probably need top be separarated into some separate functions, which might be able to be shared with view.receiveBindEvent()
