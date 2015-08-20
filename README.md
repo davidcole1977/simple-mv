@@ -26,5 +26,6 @@ This is very much work in progress and not anywhere near usable yet.
 	* add create() / extend() parameters / constructor options
 	* method chaining / fluent interface
 	* demo of data binding for simple Ractive component
+* single entry file simple-mv.js
 * Take inspiration from BackboneJS
 * Write API documentation
