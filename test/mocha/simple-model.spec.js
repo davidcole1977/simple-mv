@@ -294,7 +294,7 @@
         });
       });
 
-      describe('emitEvent()', function () {
+      describe('model events', function () {
         var publishSpy;
 
         beforeEach(function () {
@@ -309,7 +309,8 @@
         it('pubsub instance receives datum create event with expected args when datum created using set()', function () {
           var publishParams = {
                 keypath: 'foo',
-                model: model
+                model: model,
+                eventType: EVENT_TYPES.DATUM_CREATE
               };
 
           model.set('foo', 'bar');
@@ -321,7 +322,8 @@
         it('pubsub instance receives datum update event with expected args when datum updated using set()', function () {
           var publishParams = {
                 keypath: 'foo',
-                model: model
+                model: model,
+                eventType: EVENT_TYPES.DATUM_UPDATE
               };
 
           model.set('foo', 'bar');
@@ -341,7 +343,8 @@
         it('pubsub instance receives datum remove event with expected args when datum updated using remove()', function () {
           var publishParams = {
                 keypath: 'foo',
-                model: model
+                model: model,
+                eventType: EVENT_TYPES.DATUM_REMOVE
               };
 
           model.set('foo', 'bar');

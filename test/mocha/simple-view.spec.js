@@ -6,7 +6,9 @@
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-view')),
       modelSubs = require(utHelpers.getModulePath('model-subscriptions')),
-      sm = require(utHelpers.getModulePath('simple-model'));
+      sm = require(utHelpers.getModulePath('simple-model')),
+      GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
+      EVENT_TYPES = GLOBAL_CONFIG.EVENT_TYPES;
 
   
   describe('simple-view', function () {
@@ -236,39 +238,109 @@
           });
         });
         
-      });
+      }); // describe('bind()', function () {
 
-      xdescribe('addListener()', function () {
+      describe('addListener()', function () {
+        var view, model, listenerCallbackSpy;
 
-        describe('listening to a model', function () {
+        beforeEach(function () {
+          view = module.create();
+          model = sm.create();
+          model.set('foo', 'bar');
+          model.set('bat', 'man');
+          listenerCallbackSpy = sinon.spy();
+        });
+
+        describe('datum events', function () {
+          it('calls assigned callback on datum update event', function () {
+            var callbackParams = {
+              keypath: 'foo',
+              model: model,
+              eventType: EVENT_TYPES.DATUM_UPDATE
+            };
+
+            view.addListener({
+              model: model,
+              event: EVENT_TYPES.DATUM_UPDATE
+            }, listenerCallbackSpy);
+
+            model.set('foo', 'boo');
+
+            expect(listenerCallbackSpy.calledOnce).to.be.true;
+            expect(listenerCallbackSpy.calledWith(callbackParams)).to.be.true;
+          });
+
+          it('calls assigned callback on datum remove event', function () {
+            var callbackParams = {
+              keypath: 'foo',
+              model: model,
+              eventType: EVENT_TYPES.DATUM_REMOVE
+            };
+
+            view.addListener({
+              model: model,
+              event: EVENT_TYPES.DATUM_REMOVE
+            }, listenerCallbackSpy);
+
+            model.remove('foo');
+
+            expect(listenerCallbackSpy.calledOnce).to.be.true;
+            expect(listenerCallbackSpy.calledWith(callbackParams)).to.be.true;
+          });
+
+          it('calls assigned callback only on specified datum update event – specific datum', function () {
+            var callbackParams = {
+              keypath: 'foo',
+              model: model,
+              eventType: EVENT_TYPES.DATUM_UPDATE
+            };
+
+            view.addListener({
+              model: model,
+              event: EVENT_TYPES.DATUM_UPDATE,
+              keypath: 'foo'
+            }, listenerCallbackSpy);
+
+            model.set('foo', 'boo');
+            model.set('bat', 'robin');
+
+            expect(listenerCallbackSpy.calledOnce).to.be.true;
+            expect(listenerCallbackSpy.calledWith(callbackParams)).to.be.true;
+          });
+
+          it('calls assigned callback only on specified datum remove event – specific datum', function () {
+            var callbackParams = {
+              keypath: 'foo',
+              model: model,
+              eventType: EVENT_TYPES.DATUM_REMOVE
+            };
+
+            view.addListener({
+              model: model,
+              event: EVENT_TYPES.DATUM_REMOVE,
+              keypath: 'foo'
+            }, listenerCallbackSpy);
+
+            model.remove('foo');
+            model.remove('bat');
+
+            expect(listenerCallbackSpy.calledOnce).to.be.true;
+            expect(listenerCallbackSpy.calledWith(callbackParams)).to.be.true;
+          });
+        });
+
+        xdescribe('other events', function () {
           it('stuff', function () {
           
           });
         });
 
-        describe('listening to a model by event', function () {
+        xdescribe('validate arguments', function () {
           it('stuff', function () {
           
           });
         });
 
-        describe('listening to a specific datum on a model', function () {
-          it('stuff', function () {
-          
-          });
-        });
-
-        describe('listening to a specific datum on a model by event', function () {
-          it('stuff', function () {
-          
-          });
-        });
-
-        describe('arguments validation', function () {
-          it('stuff', function () {
-          
-          });
-        });
       });
 
     });
