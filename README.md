@@ -14,7 +14,7 @@ This is very much work in progress and not anywhere near usable yet.
 	* save() and fetch() methods with associated events & callbacks
 	* local storage and/or indexedDB store and fetch 'plugins'
 	* subclass / extend model
-	* on() method for adding event listener to self
+	* on() method for adding event listener to self – eg. model.on('save', eventHandler); model.on('datum_update:myDatumName', eventHandler)
 	* collections of models
 	* models / collections as datum attributes of parent model, with event bubbling
 	* method chaining / fluent interface
@@ -25,4 +25,6 @@ This is very much work in progress and not anywhere near usable yet.
 	* subclass / extend view
 	* add create() / extend() parameters / constructor options
 	* method chaining / fluent interface
+	* demo of data binding for simple Ractive component
 * Take inspiration from BackboneJS
+* Write API documentation
