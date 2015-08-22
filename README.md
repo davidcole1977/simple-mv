@@ -19,12 +19,14 @@ This is very much work in progress and not anywhere near usable yet.
 	* method chaining / fluent interface
 	* arbitrary setting / getting data values at any level of model data
 	* full validation, with validate events
+	* Emit custom events
 * View
 	* Tidy up the view.bind() method. It's FUGLY. Will likely need to be separarated into some separate functions, which might be able to be shared with view.receiveBindEvent() and addEventListener()
 	* subclass / extend view
 	* add create() / extend() parameters / constructor options
 	* method chaining / fluent interface
 	* demo of data binding for simple Ractive component
+	* Emit custom events
 * single entry file simple-mv.js
 * Take inspiration from BackboneJS
 * Write API documentation
