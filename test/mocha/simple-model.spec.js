@@ -428,18 +428,64 @@
           expect(onSpy.calledWith(callbackParams)).to.be.true;
         });
 
-        xit('validates arguments', function () {
+        it('callback assigned to named datum update event with specified namespace is called with expected params', function () {
+          var callbackParams = {
+            model: model,
+            keypath: 'foo',
+            eventType: EVENT_TYPES.DATUM_UPDATE
+          };
 
+          model.on(EVENT_TYPES.DATUM_UPDATE + ':foo', 'myNameSpace', onSpy);
+          model.set('foo', 'bar');
+          model.set('foo', 'boo');
+          model.set('waa', 'baa');
+          expect(onSpy.calledOnce).to.be.true;
+          expect(onSpy.calledWith(callbackParams)).to.be.true;
         });
       });
 
-      xdescribe('off', function () {
-        xit('removes all non-namespaced subscribers to a given topic', function () {
+      describe('off', function () {
+        var onSpy1, onSpy2, onSpy3, onSpy4;
 
+        beforeEach(function () {
+          onSpy1 = sinon.spy();
+          onSpy2 = sinon.spy();
+          onSpy3 = sinon.spy();
+          onSpy4 = sinon.spy();
         });
 
-        xit('selectively removes only certain subscribers of many to a given topic', function () {
+        it('removes all non-namespaced subscribers to a given topic', function () {
+          model.on(EVENT_TYPES.DATUM_UPDATE, onSpy1);
+          model.on(EVENT_TYPES.DATUM_UPDATE, onSpy2);
+          model.on(EVENT_TYPES.DATUM_UPDATE, onSpy3);
 
+          model.off(EVENT_TYPES.DATUM_UPDATE);
+
+          model.set('foo', 1);
+          model.set('foo', 2);
+          model.set('foo', 3);
+
+          expect(onSpy1.callCount).to.equal(0);
+          expect(onSpy2.callCount).to.equal(0);
+          expect(onSpy3.callCount).to.equal(0);
+        });
+
+        it('selectively removes only subscribers belonging to a given namespace out of many to a given topic', function () {
+          model.on(EVENT_TYPES.DATUM_UPDATE, 'myNameSpace', onSpy1);
+          model.on(EVENT_TYPES.DATUM_UPDATE, 'myNameSpace', onSpy2);
+          model.on(EVENT_TYPES.DATUM_UPDATE, 'myOtherNameSpace', onSpy3);
+          model.on(EVENT_TYPES.DATUM_UPDATE, onSpy4);
+
+          model.off(EVENT_TYPES.DATUM_UPDATE, 'myNameSpace');
+
+          model.set('foo', 1);
+          model.set('foo', 2);
+          model.set('foo', 3);
+
+          expect(onSpy1.callCount).to.equal(0);
+          expect(onSpy2.callCount).to.equal(0);
+          expect(onSpy3.callCount).to.equal(2);
+          expect(onSpy4.callCount).to.equal(2);
         });
 
         xit('validates arguments', function () {
