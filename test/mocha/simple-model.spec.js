@@ -40,21 +40,114 @@
         expect(model1.id).to.not.equal(model2.id);
       });
 
-      describe('options', function () {
-        xit('validationFailPreventsSet', function () {
+      describe('overriding and extending built in parameters / options', function () {
 
+        describe('initialise', function () {
+          it('function called when model created', function () {
+            var initSpy = sinon.spy(),
+                model = module.create({
+                  initialise: initSpy
+                });
+
+            expect(initSpy.calledOnce).to.be.true;
+          });  
+        });  
+
+        describe('validationFailPreventsSet', function () {
+          it('prevents values being set() and corresponding events being published if validation fails when set to true', function () {
+            var model = module.create({
+              validationFailPreventsSet: true
+            });
+
+            model.assignValidator('foo', 'isString');
+            model.set('foo', 'bar');
+            expect(model.set.bind(model, 'foo', 999)).to.throw(Error);
+            expect(model.get('foo')).to.equal('bar');
+          });
+
+          it('allows values to be set() and corresponding events to be published if validation fails when set to false', function () {
+            var model = module.create({
+              validationFailPreventsSet: false
+            });
+
+            model.assignValidator('foo', 'isString');
+            model.set('foo', 'bar');
+            expect(model.set.bind(model, 'foo', 999)).to.not.throw(Error);
+            expect(model.get('foo')).to.equal(999);
+          });
+
+          it('defaults to true when not explicitly set', function () {
+            var model = module.create();
+
+            model.assignValidator('foo', 'isString');
+            model.set('foo', 'bar');
+            expect(model.set.bind(model, 'foo', 999)).to.throw(Error);
+            expect(model.get('foo')).to.equal('bar');
+          });
         });
 
-        xit('default data', function () {
+        describe('data', function () {
+          it('overrides build in data', function () {
+            var dataOption = {
+                  foo: 'bar',
+                  woo: [1,2,3,4,4]
+                },
+                model = module.create({
+                  data: dataOption
+                });
 
+            expect(model.data).to.deep.equal(dataOption);
+          });
+
+          it('built in data is empty object if not explicitly set', function () {
+            var model = module.create();
+            expect(model.data).to.deep.equal({});
+          });
         });
 
-        xit('default validators', function () {
+        describe('validatorsMap', function () {
+          it('overrides build in validatorsMap', function () {
+            var validatorsMapOption = {
+                  foo: ['validator1', 'validator2', 'validator3'],
+                  bar: ['validator1']
+                },
+                model = module.create({
+                  validatorsMap: validatorsMapOption
+                });
 
+            expect(model.validatorsMap).to.deep.equal(validatorsMapOption);
+          });
+
+          it('built in validatorsMap is empty object if not explicitly set', function () {
+            var model = module.create();
+            expect(model.validatorsMap).to.deep.equal({});
+          });
         });
-      });
 
-      describe('custom parameters and methods', function () {
+        describe('custom parameters', function () {
+          it('assigns arbitrary custom parameters to model', function () {
+            var customParams = {
+                  foo: 'boo',
+                  cow: [1,2,3,4,5,6,7],
+                  faa: function () {}
+                },
+                model = module.create(customParams);
+
+            expect(model.foo).to.deep.equal(customParams.foo);
+            expect(model.cow).to.deep.equal(customParams.cow);
+            expect(model.faa).to.deep.equal(customParams.faa);
+          });
+        });
+
+        xdescribe('validate options input', function () {
+          it('stuff', function () {
+
+          });
+
+          it('cannot override key methods and params (eg. get(), set())', function () {
+
+          });
+        });  
 
       });
     });
@@ -174,14 +267,13 @@
       describe('assignValidator()', function () {
         it('assigns a single validator object to a datum keypath', function () {
           model.assignValidator('foo', 'isString');
-          expect(model.validatorsMap.foo.isString).to.contain.all.keys(['isValid', 'message']);
+          expect(model.validatorsMap.foo).to.deep.equal(['isString']);
         });
 
         it('assigns multiple validator objects to a datum keypath (separate statements)', function () {
           model.assignValidator('foo', 'isString');
           model.assignValidator('foo', 'hasLengthOfFour');
-          expect(model.validatorsMap.foo.isString).to.contain.all.keys(['isValid', 'message']);
-          expect(model.validatorsMap.foo.hasLengthOfFour).to.contain.all.keys(['isValid', 'message']);
+          expect(model.validatorsMap.foo).to.deep.equal(['isString', 'hasLengthOfFour']);
         });
 
         xit('assigns multiple validator objects to a datum keypath (second argument is array)', function () {
@@ -201,6 +293,12 @@
         });
 
         xit('throws an error if the second argument isn\'t a validator-like object', function () {
+
+        });
+      });
+
+      xdescribe('removeValidator()', function () {
+        it('stuff', function () {
 
         });
       });
@@ -294,18 +392,76 @@
         });
       });
 
-      describe('model events', function () {
-        var publishSpy;
+      describe('on', function () {
+        var onSpy;
 
         beforeEach(function () {
-          model = module.create();
-          publishSpy = sinon.spy(model.subsList, 'publish');
+          onSpy = sinon.spy();
         });
 
-        afterEach(function () {
-          model.subsList.publish.restore();
+        it('callback assigned to datum update event is called with expected params', function () {
+          var callbackParams = {
+            model: model,
+            keypath: 'foo',
+            eventType: EVENT_TYPES.DATUM_UPDATE
+          };
+
+          model.on(EVENT_TYPES.DATUM_UPDATE, onSpy);
+          model.set('foo', 'bar');
+          model.set('foo', 'woo');
+          expect(onSpy.calledOnce).to.be.true;
+          expect(onSpy.calledWith()).to.be.true;
         });
 
+        it('callback assigned to named datum update event is called with expected params', function () {
+          var callbackParams = {
+            model: model,
+            keypath: 'foo',
+            eventType: EVENT_TYPES.DATUM_UPDATE
+          };
+
+          model.on(EVENT_TYPES.DATUM_UPDATE + ':foo', onSpy);
+          model.set('foo', 'bar');
+          model.set('foo', 'boo');
+          model.set('waa', 'baa');
+          expect(onSpy.calledOnce).to.be.true;
+          expect(onSpy.calledWith(callbackParams)).to.be.true;
+        });
+
+        xit('validates arguments', function () {
+
+        });
+      });
+
+      xdescribe('off', function () {
+        xit('removes all non-namespaced subscribers to a given topic', function () {
+
+        });
+
+        xit('selectively removes only certain subscribers of many to a given topic', function () {
+
+        });
+
+        xit('validates arguments', function () {
+
+        });
+      });
+
+    });
+
+    describe('model events', function () {
+      var model, publishSpy;
+
+      beforeEach(function () {
+        model = module.create();
+        publishSpy = sinon.spy(model.subsList, 'publish');
+      });
+
+      afterEach(function () {
+        model.subsList.publish.restore();
+      });
+
+      describe('datum create', function () {
         it('pubsub instance receives datum create event with expected args when datum created using set()', function () {
           var publishParams = {
                 keypath: 'foo',
@@ -318,7 +474,9 @@
           expect(publishSpy.calledWith(EVENT_TYPES.DATUM_CREATE, publishParams)).to.be.true;
           expect(publishSpy.calledWith(EVENT_TYPES.DATUM_CREATE + ':foo', publishParams)).to.be.true;
         });
+      });
 
+      describe('datum set', function () {
         it('pubsub instance receives datum update event with expected args when datum updated using set()', function () {
           var publishParams = {
                 keypath: 'foo',
@@ -339,7 +497,9 @@
 
           expect(publishSpy.calledTwice).to.be.true;
         });
+      });
 
+      describe('datum remove', function () {
         it('pubsub instance receives datum remove event with expected args when datum updated using remove()', function () {
           var publishParams = {
                 keypath: 'foo',
@@ -353,24 +513,31 @@
           expect(publishSpy.calledWith(EVENT_TYPES.DATUM_REMOVE, publishParams)).to.be.true;
           expect(publishSpy.calledWith(EVENT_TYPES.DATUM_REMOVE + ':foo', publishParams)).to.be.true;
         });
+      });
 
-        xit('model initialise', function () {
-
-        });
-
-        xit('model remove / destroy', function () {
-
-        });
-
-        xit('ancestor keypath events / publish events when child keypath is updated', function () {
-
-        });
-
-        xit('other event types (eg. fail validation, include error details, validation type etc.', function () {
+      xdescribe('save-related events?', function () {
+        it('stuff', function () {
 
         });
       });
 
+      xdescribe('fetch-related events?', function () {
+        it('stuff', function () {
+
+        });
+      });
+
+      xdescribe('ancestor keypath events / publish events when child keypath is updated', function () {
+        it('stuff', function () {
+
+        });
+      });
+
+      xdescribe('other event types (eg. fail validation, include error details, validation type etc.', function () {
+        it('stuff', function () {
+
+        });
+      });
     });
 
   });

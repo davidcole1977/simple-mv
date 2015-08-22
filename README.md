@@ -9,7 +9,6 @@ This is very much work in progress and not anywhere near usable yet.
 ### To do
 
 * Model
-	* add model initialise and destroy events
 	* add create() / extend() parameters / constructor options
 	* save() and fetch() methods with associated events & callbacks
 	* local storage and/or indexedDB store and fetch 'plugins'
