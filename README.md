@@ -20,7 +20,6 @@ This is very much work in progress and not anywhere near usable yet.
 	* arbitrary setting / getting data values at any level of model data
 	* full validation, with validate events
 	* Emit custom events
-	* tidy up 'attemptedPrototypeOverride' part of create() and move into funciton in helpers module
 * View
 	* Tidy up the view.bind() method. It's FUGLY. Will likely need to be separarated into some separate functions, which might be able to be shared with view.receiveBindEvent() and addEventListener()
 	* subclass / extend view
@@ -28,6 +27,9 @@ This is very much work in progress and not anywhere near usable yet.
 	* method chaining / fluent interface
 	* demo of data binding for simple Ractive component
 	* Emit custom events
+* Collection
+  * do stuff
+* Refactor common prototype methods (eg. on(), off()) into common (prototype? module?)
 * Model saver & fetcher factories
 * single entry file simple-mv.js
 * Take inspiration from BackboneJS
