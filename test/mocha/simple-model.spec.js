@@ -124,6 +124,38 @@
           });
         });
 
+        describe('saver', function () {
+          it('has null value if not explicitly set', function () {
+            var model = module.create();
+            expect(model.saver).to.equal(null);
+          });
+
+          it('overwites built in parameter', function () {
+            var saverOption = function () {},
+                model = module.create({
+                  saver: saverOption
+                });
+
+            expect(model.saver).to.equal(saverOption);
+          });
+        });
+
+        describe('fetcher', function () {
+          it('has null value if not explicitly set', function () {
+            var model = module.create();
+            expect(model.fetcher).to.equal(null);
+          });
+
+          it('overwites built in parameter', function () {
+            var fetcherOption = function () {},
+                model = module.create({
+                  fetcher: fetcherOption
+                });
+                
+            expect(model.fetcher).to.equal(fetcherOption);
+          });
+        });
+
         describe('custom parameters', function () {
           it('assigns arbitrary custom parameters to model', function () {
             var customParams = {
@@ -139,13 +171,34 @@
           });
         });
 
-        xdescribe('validate options input', function () {
-          it('stuff', function () {
+        describe('validate options input', function () {
+          var protectedParams = [
+            'set',
+            'get',
+            'remove',
+            'getRawData',
+            'assignValidator',
+            'isValid',
+            'emitDatumEvent',
+            'on',
+            'off',
+            'save',
+            'fetch',
+            'extend',
+            'create'
+          ];
+
+          xit('stuff', function () {
 
           });
 
-          it('cannot override key methods and params (eg. get(), set())', function () {
+          protectedParams.forEach(function (paramName) {
+            it('throws error if attempts to override protoype param "' + paramName + '"', function () {
+              var options = {};
+                  options[paramName] = function () {};
 
+              expect(module.create.bind(null, options)).to.throw(Error);
+            });
           });
         });  
 
@@ -486,6 +539,100 @@
           expect(onSpy2.callCount).to.equal(0);
           expect(onSpy3.callCount).to.equal(2);
           expect(onSpy4.callCount).to.equal(2);
+        });
+
+        xit('validates arguments', function () {
+
+        });
+      });
+
+      describe('save', function () {
+        it('calls saver function specified in arguments', function () {
+          var saver = sinon.spy();
+          model.save(saver);
+          expect(saver.calledOnce).to.be.true;
+        });
+
+        it('if no arguments, calls saver option specified as object create / extend option', function () {
+          var saver = sinon.spy();
+          model = module.create({
+            saver: saver
+          });
+
+          model.save();
+          expect(saver.calledOnce).to.be.true;
+        });
+
+        it('if saver specified in arguments and in object create / extend params, calls save argument and not create param', function () {
+          var saverOption = sinon.spy(),
+              saverArg = sinon.spy();
+
+          model = module.create({
+            saver: saverOption
+          });
+
+          model.save(saverArg);
+          expect(saverArg.calledOnce).to.be.true;
+          expect(saverOption.called).to.be.false;
+        });
+
+        xit('saver function has this value of model if specified as argument', function () {
+
+        });
+
+        xit('saver function has this value of model if specified as create option', function () {
+
+        });
+
+        xit('if no arguments and no create option, throws error', function () {
+
+        });
+
+        xit('validates arguments', function () {
+
+        });
+      });
+
+      describe('fetch', function () {
+        it('calls fetcher function specified in arguments', function () {
+          var fetcher = sinon.spy();
+          model.fetch(fetcher);
+          expect(fetcher.calledOnce).to.be.true;
+        });
+
+        it('if no arguments, calls fetcher option specified as object create / extend option', function () {
+          var fetcher = sinon.spy();
+          model = module.create({
+            fetcher: fetcher
+          });
+
+          model.fetch();
+          expect(fetcher.calledOnce).to.be.true;
+        });
+
+        it('if fetcher specified in arguments and in object create / extend params, calls fetch argument and not create param', function () {
+          var fetcherOption = sinon.spy(),
+              fetcherArg = sinon.spy();
+
+          model = module.create({
+            fetcher: fetcherOption
+          });
+
+          model.fetch(fetcherArg);
+          expect(fetcherArg.calledOnce).to.be.true;
+          expect(fetcherOption.called).to.be.false;
+        });
+
+        xit('fetcher function has this value of model if specified as argument', function () {
+
+        });
+
+        xit('fetcher function has this value of model if specified as create option', function () {
+
+        });
+
+        xit('if no arguments and no create option, throws error', function () {
+
         });
 
         xit('validates arguments', function () {
