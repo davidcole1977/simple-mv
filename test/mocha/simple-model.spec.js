@@ -172,34 +172,23 @@
         });
 
         describe('validate options input', function () {
-          var protectedParams = [
-            'set',
-            'get',
-            'remove',
-            'getRawData',
-            'assignValidator',
-            'isValid',
-            'emitDatumEvent',
-            'on',
-            'off',
-            'save',
-            'fetch',
-            'extend',
-            'create'
-          ];
+          var modelPrototype = Object.getPrototypeOf(module.create()),
+              protectedParams = Object.keys(modelPrototype);
 
-          xit('stuff', function () {
-
-          });
-
-          protectedParams.forEach(function (paramName) {
+          function testProtectedParamOverride (paramName) {
             it('throws error if attempts to override protoype param "' + paramName + '"', function () {
               var options = {};
                   options[paramName] = function () {};
 
               expect(module.create.bind(null, options)).to.throw(Error);
             });
+          }
+
+          xit('stuff', function () {
+
           });
+
+          protectedParams.forEach(testProtectedParamOverride);
         });  
 
       });
