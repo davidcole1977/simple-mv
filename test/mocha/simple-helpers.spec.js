@@ -90,6 +90,20 @@
 
     });
 
+    describe('isAnObject()', function () {
+      var isAnObject = module.isAnObject;
+
+      it('returns true if argument is an object', function () {
+        expect(isAnObject({})).to.be.true;
+      });
+
+      it('returns false if argument is not an object, including arrays and null', function () {
+        utHelpers.everyThingExceptObject.forEach(function(notAnObject) {
+          expect(isAnObject(notAnObject)).to.be.false;
+        });
+      });
+    });
+
   });
 
 })();
