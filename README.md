@@ -9,24 +9,22 @@ This is very much work in progress and not anywhere near usable yet.
 ### To do
 
 * Model
-	* add create() / extend() parameters / constructor options
 	* save() and fetch() methods with associated events & callbacks
 	* local storage and/or indexedDB store and fetch 'plugins'
-	* subclass / extend model
-	* on() method for adding event listener to self – eg. model.on('save', eventHandler); model.on('datum_update:myDatumName', eventHandler)
 	* collections of models
 	* models / collections as datum attributes of parent model, with event bubbling
 	* method chaining / fluent interface
 	* arbitrary setting / getting data values at any level of model data
+	* set and get data directly, without using get() / set()
 	* full validation, with validate events
 	* Emit custom events
 * View
-	* Tidy up the view.bind() method. It's FUGLY. Will likely need to be separarated into some separate functions, which might be able to be shared with view.receiveBindEvent() and addEventListener()
 	* subclass / extend view
 	* add create() / extend() parameters / constructor options
 	* method chaining / fluent interface
 	* demo of data binding for simple Ractive component
 	* Emit custom events
+	* apply common prototype & create / extend stuff from model, collections etc.
 * Collection
   * do stuff
 * Refactor common prototype methods (eg. on(), off()) into common (prototype? module?)
