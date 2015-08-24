@@ -4,9 +4,13 @@
 
 > A basic Javascript Model View library
 
-This is very much work in progress and not anywhere near usable yet.
+This is intended to be a lightweight Model View library, inspired by BackboneJS and designed to play well with View libraries such as React, Ractive and Knockout.
 
-### To do
+It's being built as a learning exercise and in all likelyhood you'll be better off using Backbone, but perhaps you'll find it useful.
+
+It's currently very much a work in progress and does not deserve a version number yet. If you use it, it will probably destroy your code and post a flaming turd through your letterbox.
+
+## To do
 
 * Model
 	* save() and fetch() methods with associated events & callbacks
@@ -19,6 +23,7 @@ This is very much work in progress and not anywhere near usable yet.
 	* full validation, with validate events
 	* Emit custom events
 	* destroy()
+	* receive and pass through events from child models & collections
 * View
 	* subclass / extend view
 	* add create() / extend() parameters / constructor options
@@ -29,6 +34,8 @@ This is very much work in progress and not anywhere near usable yet.
 	* change the name of the bind() method – it's confusing!
 * Collection
   * destroy()
+  * get, put, push, sort etc.
+  * receive and pass through events from child models
 * Events / pubsub
   * refactor to use a single default pubsub list instead of each model / collection etc. having its own pubsub list
   * stopListeningTo method
@@ -39,3 +46,38 @@ This is very much work in progress and not anywhere near usable yet.
 * single entry file simple-mv.js
 * Take inspiration from BackboneJS
 * Write API documentation
+* Ensure all pubsub subscriptions are tidied up when components are removed
+
+## Names...
+
+* Mortar
+* Copper
+* Plumber
+* Brick
+* Breezeblock
+* Glue
+* Cement
+* Fetch
+* Muster
+* Mustard
+* But EVERY name is already taken! :'(
+* (need to get a bit esoteric...)
+* Mario / Luigi (plumber)
+
+## Pubsub topics (events) definitions
+
+```js
+event_type[:component_id[:datum_name]]
+
+eg.
+update_datum
+create_model:model_12
+remove_datum:model_9:my_datum_name
+
+  EVENT_TYPES: {
+    MODEL_CREATE: 'create-model',
+    DATUM_UPDATE: 'update-datum',
+    DATUM_CREATE: 'create-datum',
+    DATUM_REMOVE: 'remove-datum'
+  }
+```
