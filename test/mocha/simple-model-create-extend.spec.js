@@ -57,10 +57,10 @@
           });
         });  
 
-        describe('validationFailPreventsSet', function () {
+        describe('validateOnSet', function () {
           it('prevents values being set() and corresponding events being published if validation fails when set to true', function () {
             var model = module.create({
-              validationFailPreventsSet: true
+              validationOnSet: true
             });
 
             model.assignValidator('foo', 'isString');
@@ -71,7 +71,7 @@
 
           it('allows values to be set() and corresponding events to be published if validation fails when set to false', function () {
             var model = module.create({
-              validationFailPreventsSet: false
+              validationOnSet: false
             });
 
             model.assignValidator('foo', 'isString');
@@ -88,6 +88,10 @@
             expect(model.set.bind(model, 'foo', 999)).to.throw(Error);
             expect(model.get('foo')).to.equal('bar');
           });
+        });
+
+        xdescribe('validateOnSave', function () {
+          it('stuff', function () {});
         });
 
         describe('data', function () {

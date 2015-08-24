@@ -18,6 +18,7 @@ This is very much work in progress and not anywhere near usable yet.
 	* set and get data directly, without using get() / set()
 	* full validation, with validate events
 	* Emit custom events
+	* destroy()
 * View
 	* subclass / extend view
 	* add create() / extend() parameters / constructor options
@@ -25,9 +26,15 @@ This is very much work in progress and not anywhere near usable yet.
 	* demo of data binding for simple Ractive component
 	* Emit custom events
 	* apply common prototype & create / extend stuff from model, collections etc.
+	* change the name of the bind() method – it's confusing!
 * Collection
-  * do stuff
+  * destroy()
+* Events / pubsub
+  * refactor to use a single default pubsub list instead of each model / collection etc. having its own pubsub list
+  * stopListeningTo method
+  * generic emitEvent (trigger) method
 * Refactor common prototype methods (eg. on(), off()) into common (prototype? module?)
+* Common shared extend() method
 * Model saver & fetcher factories
 * single entry file simple-mv.js
 * Take inspiration from BackboneJS
