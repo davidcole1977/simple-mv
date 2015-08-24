@@ -47,6 +47,7 @@ It's currently very much a work in progress and does not deserve a version numbe
 * Take inspiration from BackboneJS
 * Write API documentation
 * Ensure all pubsub subscriptions are tidied up when components are removed
+* Refactor unit tests for efficiency, taking into account recent refactoring – test generic prototype tasks and module methods in detail in separate tests (eg. events, create, extend) and do only essential further testing in specific modules (eg. model, view, collection)
 
 ## Names...
 
