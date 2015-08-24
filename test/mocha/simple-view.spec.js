@@ -5,7 +5,7 @@
       sinon = require('sinon'),
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-view')),
-      modelSubs = require(utHelpers.getModulePath('model-subscriptions')),
+      modelSubs = require(utHelpers.getModulePath('app-subscriptions')),
       sm = require(utHelpers.getModulePath('simple-model')),
       GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
       EVENT_TYPES = GLOBAL_CONFIG.EVENT_TYPES;
