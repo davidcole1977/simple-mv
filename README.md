@@ -58,14 +58,17 @@ It's currently very much a work in progress and does not deserve a version numbe
 * Breezeblock
 * Glue
 * Cement
-* Fetch
 * Muster
-* Mustard
-* But EVERY name is already taken! :'(
+* Lasso
+* But EVERY name is already taken! :(
 * (need to get a bit esoteric...)
 * Mario / Luigi (plumber)
+* Armature
+* Animal / plant names
 
 ## Pubsub topics (events) definitions
+
+*To be implemented...*
 
 ```js
 event_type[:component_id[:datum_name]]

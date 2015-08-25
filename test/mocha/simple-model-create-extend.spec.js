@@ -114,7 +114,7 @@
         });
 
         describe('validatorsMap', function () {
-          it('overrides build in validatorsMap', function () {
+          it('overrides built in validatorsMap', function () {
             var validatorsMapOption = {
                   foo: ['validator1', 'validator2', 'validator3'],
                   bar: ['validator1']
@@ -238,13 +238,12 @@
         expect(myModelInstance1.customArray).to.deep.equal(myModelInstance2.customArray);
       });
 
-      it('Two models created using a given extend() return object each have unique IDs and subscription lists', function () {
+      it('Two models created using a given extend() return object each have unique IDs', function () {
         var myModelClass = module.extend({}),
             myModelInstance1 = myModelClass.create(),
             myModelInstance2 = myModelClass.create();
 
         expect(myModelInstance1.id).to.not.equal(myModelInstance2.id);
-        expect(myModelInstance1.subsList).to.not.deep.equal(myModelInstance2.subsList);
       });
 
       it('throws error if first argument is not an object', function () {

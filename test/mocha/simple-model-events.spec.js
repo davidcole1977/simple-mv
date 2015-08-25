@@ -5,6 +5,7 @@
       sinon = require('sinon'),
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-model')),
+      appSubsLists = require(utHelpers.getModulePath('./app-subscriptions')),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
       GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
       EVENT_TYPES = GLOBAL_CONFIG.EVENT_TYPES,
@@ -32,11 +33,11 @@
 
       beforeEach(function () {
         model = module.create();
-        publishSpy = sinon.spy(model.subsList, 'publish');
+        publishSpy = sinon.spy(appSubsLists, 'publish');
       });
 
       afterEach(function () {
-        model.subsList.publish.restore();
+        appSubsLists.publish.restore();
       });
 
       describe('datum create', function () {
@@ -45,12 +46,18 @@
                 keypath: 'foo',
                 model: model,
                 eventType: EVENT_TYPES.DATUM_CREATE
-              };
+              },
+              topics = [
+                EVENT_TYPES.DATUM_CREATE,
+                EVENT_TYPES.DATUM_CREATE + ':' + model.id,
+                EVENT_TYPES.DATUM_CREATE + ':' + model.id + ':foo',
+              ];
 
           model.set('foo', 'bar');
 
-          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_CREATE, publishParams)).to.be.true;
-          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_CREATE + ':foo', publishParams)).to.be.true;
+          topics.forEach(function (topic) {
+            expect(publishSpy.calledWith(topic, publishParams)).to.be.true;
+          });
         });
       });
 
@@ -60,20 +67,26 @@
                 keypath: 'foo',
                 model: model,
                 eventType: EVENT_TYPES.DATUM_UPDATE
-              };
+              },
+              topics = [
+                EVENT_TYPES.DATUM_UPDATE,
+                EVENT_TYPES.DATUM_UPDATE + ':' + model.id,
+                EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo',
+              ];
 
           model.set('foo', 'bar');
           model.set('foo', 'boo');
 
-          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_UPDATE, publishParams)).to.be.true;
-          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_UPDATE + ':foo', publishParams)).to.be.true;
+          topics.forEach(function (topic) {
+            expect(publishSpy.calledWith(topic, publishParams)).to.be.true;
+          });
         });
 
         it('pubsub instance does not receive update event set() is called with existing value', function () {
           model.set('foo', 'bar');
           model.set('foo', 'bar');
 
-          expect(publishSpy.calledTwice).to.be.true;
+          expect(publishSpy.calledThrice).to.be.true;
         });
       });
 
@@ -83,13 +96,19 @@
                 keypath: 'foo',
                 model: model,
                 eventType: EVENT_TYPES.DATUM_REMOVE
-              };
+              },
+              topics = [
+                EVENT_TYPES.DATUM_REMOVE,
+                EVENT_TYPES.DATUM_REMOVE + ':' + model.id,
+                EVENT_TYPES.DATUM_REMOVE + ':' + model.id + ':foo',
+              ];
 
           model.set('foo', 'bar');
           model.remove('foo');
 
-          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_REMOVE, publishParams)).to.be.true;
-          expect(publishSpy.calledWith(EVENT_TYPES.DATUM_REMOVE + ':foo', publishParams)).to.be.true;
+          topics.forEach(function (topic) {
+            expect(publishSpy.calledWith(topic, publishParams)).to.be.true;
+          });
         });
       });
 

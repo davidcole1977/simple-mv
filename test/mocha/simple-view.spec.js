@@ -341,6 +341,12 @@
           });
         });
 
+      }); // describe('addListener()', function () {
+
+      xdescribe('removeListener()', function () {
+        it('stuff', function () {
+
+        });
       });
 
     });

@@ -261,35 +261,36 @@
         });
       });
 
-      describe('on', function () {
-        var onSpy;
+      describe.only('on', function () {
+        var onSpy, callbackParams;
+
+        callbackParams = {
+          model: model,
+          keypath: 'foo',
+          eventType: EVENT_TYPES.DATUM_UPDATE
+        };
 
         beforeEach(function () {
           onSpy = sinon.spy();
         });
 
-        it('callback assigned to datum update event is called with expected params', function () {
-          var callbackParams = {
-            model: model,
-            keypath: 'foo',
-            eventType: EVENT_TYPES.DATUM_UPDATE
-          };
-
+        it('callback assigned to general datum update event is called with expected params', function () {
           model.on(EVENT_TYPES.DATUM_UPDATE, onSpy);
+
           model.set('foo', 'bar');
           model.set('foo', 'woo');
+
           expect(onSpy.calledOnce).to.be.true;
           expect(onSpy.calledWith()).to.be.true;
         });
 
-        it('callback assigned to named datum update event is called with expected params', function () {
-          var callbackParams = {
-            model: model,
-            keypath: 'foo',
-            eventType: EVENT_TYPES.DATUM_UPDATE
-          };
+        it('callback assigned to general datum update event with specified namespace is called with expected arguments', function () {
+          expect(false).to.be.true;
+        });
 
+        it('callback assigned to named datum update event is called with expected params', function () {
           model.on(EVENT_TYPES.DATUM_UPDATE + ':foo', onSpy);
+
           model.set('foo', 'bar');
           model.set('foo', 'boo');
           model.set('waa', 'baa');
@@ -297,12 +298,7 @@
           expect(onSpy.calledWith(callbackParams)).to.be.true;
         });
 
-        it('callback assigned to named datum update event with specified namespace is called with expected params', function () {
-          var callbackParams = {
-            model: model,
-            keypath: 'foo',
-            eventType: EVENT_TYPES.DATUM_UPDATE
-          };
+        it('callback assigned to named datum update event with specified namespace is called with expected arguments', function () {
 
           model.on(EVENT_TYPES.DATUM_UPDATE + ':foo', 'myNameSpace', onSpy);
           model.set('foo', 'bar');
