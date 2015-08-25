@@ -10,7 +10,174 @@ It's being built as a learning exercise and in all likelyhood you'll be better o
 
 It's currently very much a work in progress and does not deserve a version number yet. If you use it, it will probably destroy your code and post a flaming turd through your letterbox.
 
-## To do
+## Set up
+
+```js
+npm install simple-mv --save-dev // this won't work, as it's not in the NPM registery yet...
+```
+
+## API
+
+### simple-model
+
+#### create()
+
+```js
+var model = require('simple-mv').model,
+    myModel;
+
+myModel =  model.create({
+  data: {
+    foo: 'bar',
+    woo: [1,2,3,4,5]
+  },
+  initialise: function () {
+    // do custom things when model is created
+  }
+});
+```
+
+#### extend()
+
+```js
+var model = require('simple-mv').model,
+    myModelClass,
+    myModelInstance1,
+    myModelInstance2;
+
+myModelClass = model.extend({
+  data: {
+    foo: 'bar',
+    woo: [1,2,3,4,5]
+  },
+  initialise: function () {
+    // do custom things when model is created
+  }
+});
+
+myModelInstance1 =  myModelClass.create();
+myModelInstance2 =  myModelClass.create();
+```
+
+#### Properties
+
+TBC...
+
+#### Events
+
+TBC...
+
+#### get()
+
+#### set()
+
+#### remove()
+
+#### getRawData()
+
+#### assignValidator()
+
+#### removeValidator()
+
+#### isValid()
+
+#### on()
+
+#### off()
+
+#### addListener()
+
+#### removeListener()
+
+#### save()
+
+#### fetch()
+
+#### More...
+
+----------------
+
+### simple-collection
+
+#### Properties
+
+TBC...
+
+#### Events
+
+TBC...
+
+#### create()
+
+#### extend()
+
+#### on()
+
+#### off()
+
+#### addListener()
+
+#### removeListener()
+
+#### save()
+
+#### fetch()
+
+#### More...
+
+----------------
+
+### simple-view
+
+#### Properties
+
+TBC...
+
+#### Events
+
+TBC...
+
+#### create()
+
+#### extend()
+
+#### on()
+
+#### off()
+
+#### addListener()
+
+#### removeListener()
+
+#### bindData()
+
+#### unbindData()
+
+----------------
+
+### simple-events
+
+TBC...
+
+----------------
+
+### simple-store
+
+TBC...
+
+----------------
+
+### simple-pubsub
+
+TBC...
+
+----------------
+
+## Releases
+
+## To Do
+
+[Trello simple-mv board](https://trello.com/b/mZkBqF8w/simple-mv)
 
 * Model
 	* save() and fetch() methods with associated events & callbacks
@@ -38,8 +205,10 @@ It's currently very much a work in progress and does not deserve a version numbe
   * receive and pass through events from child models
 * Events / pubsub
   * refactor to use a single default pubsub list instead of each model / collection etc. having its own pubsub list
+  * method to construct topic names
   * stopListeningTo method
   * generic emitEvent (trigger) method
+  * addListener(), removeListener(), on() and off() share way too much code - refactor out the duplication
 * Refactor common prototype methods (eg. on(), off()) into common (prototype? module?)
 * Common shared extend() method
 * Model saver & fetcher factories

@@ -261,7 +261,7 @@
         });
       });
 
-      describe('on', function () {
+      describe('on()', function () {
         var onSpy;
 
         beforeEach(function () {
@@ -364,7 +364,7 @@
         });
       });
 
-      describe('off', function () {
+      describe('off()', function () {
         var onSpy1, onSpy2, onSpy3, onSpy4;
 
         beforeEach(function () {
@@ -464,7 +464,6 @@
           expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myNameSpace).to.be.undefined;
           expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
           expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
-
         });
 
         xit('validates arguments', function () {
