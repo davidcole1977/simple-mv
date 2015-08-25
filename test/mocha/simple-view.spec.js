@@ -252,7 +252,7 @@
         });
       });
 
-      describe('addListener()', function () {
+      describe('listenTo()', function () {
         var view, model, listenerSpy;
 
         beforeEach(function () {
@@ -273,7 +273,7 @@
                 eventType: EVENT_TYPES.DATUM_UPDATE
               };
 
-          view.addListener({
+          view.listenTo({
             target: model,
             eventType: EVENT_TYPES.DATUM_UPDATE
           }, listenerSpy);
@@ -300,7 +300,7 @@
                 eventType: EVENT_TYPES.DATUM_UPDATE
               };
 
-          view.addListener({
+          view.listenTo({
             target: model,
             eventType: EVENT_TYPES.DATUM_UPDATE,
             nameSpace: 'baasheep'
@@ -323,7 +323,7 @@
                 eventType: EVENT_TYPES.DATUM_UPDATE
               };
 
-          view.addListener({
+          view.listenTo({
             target: model,
             eventType: EVENT_TYPES.DATUM_UPDATE,
             keypath: 'foo',
@@ -345,7 +345,7 @@
                 eventType: EVENT_TYPES.DATUM_UPDATE
               };
 
-          view.addListener({
+          view.listenTo({
             target: model,
             eventType: EVENT_TYPES.DATUM_UPDATE,
             keypath: 'foo',
@@ -367,9 +367,9 @@
           });
         });
 
-      }); // describe('addListener()', function () {
+      }); // describe('listenTo()', function () {
 
-      describe('removeListener()', function () {
+      describe('stopListeningTo()', function () {
         var view, model, listenerSpy1, listenerSpy2, listenerSpy3, listenerSpy4;
 
         beforeEach(function () {
@@ -387,14 +387,14 @@
                 eventType: EVENT_TYPES.DATUM_UPDATE
               };
 
-          view.addListener(options, listenerSpy1);
-          view.addListener(options, listenerSpy2);
-          view.addListener(options, listenerSpy3);
+          view.listenTo(options, listenerSpy1);
+          view.listenTo(options, listenerSpy2);
+          view.listenTo(options, listenerSpy3);
 
           // TODO: THIS DOESN'T BELONG HERE - SEPARATE TEST PLEASE!
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(3);
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(3);
 
-          view.removeListener(options);
+          view.stopListeningTo(options);
 
           model.set('foo', 1);
           model.set('foo', 2);
@@ -404,7 +404,7 @@
           expect(listenerSpy2.callCount).to.equal(0);
           expect(listenerSpy3.callCount).to.equal(0);
 
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(0);
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(0);
         });
 
         it('removes all non-namespaced subscribers to a specific datum update', function () {
@@ -414,14 +414,14 @@
                 keypath: 'foo'
               };
 
-          view.addListener(options, listenerSpy1);
-          view.addListener(options, listenerSpy2);
-          view.addListener(options, listenerSpy3);
+          view.listenTo(options, listenerSpy1);
+          view.listenTo(options, listenerSpy2);
+          view.listenTo(options, listenerSpy3);
 
           // TODO: THIS ASSERTION DOESN'T BELONG HERE - SEPARATE TEST PLEASE!
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo'].unNameSpaced).to.have.length(3);
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo'].unNameSpaced).to.have.length(3);
 
-          view.removeListener(options);
+          view.stopListeningTo(options);
 
           model.set('foo', 1);
           model.set('foo', 2);
@@ -431,39 +431,39 @@
           expect(listenerSpy2.callCount).to.equal(0);
           expect(listenerSpy3.callCount).to.equal(0);
 
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo'].unNameSpaced).to.have.length(0);
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo'].unNameSpaced).to.have.length(0);
         });
 
         it('selectively removes only subscribers belonging to a given namespace out of many to a general datum update', function () {
-          view.addListener({
+          view.listenTo({
             target: model,
             eventType: EVENT_TYPES.DATUM_UPDATE,
             nameSpace: 'myNameSpace'
           }, listenerSpy1);
 
-          view.addListener({
+          view.listenTo({
             target: model,
             eventType: EVENT_TYPES.DATUM_UPDATE,
             nameSpace: 'myNameSpace'
           }, listenerSpy2);
 
-          view.addListener({
+          view.listenTo({
             target: model,
             eventType: EVENT_TYPES.DATUM_UPDATE,
             nameSpace: 'myOtherNameSpace'
           }, listenerSpy3);
 
-          view.addListener({
+          view.listenTo({
             target: model,
             eventType: EVENT_TYPES.DATUM_UPDATE
           }, listenerSpy4);
 
           // TODO: THESE ASSERTIONs DON'T BELONG HERE
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myNameSpace).to.have.length(2);
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myNameSpace).to.have.length(2);
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
 
-          view.removeListener({
+          view.stopListeningTo({
             target: model,
             eventType: EVENT_TYPES.DATUM_UPDATE,
             nameSpace: 'myNameSpace'
@@ -478,9 +478,9 @@
           expect(listenerSpy3.callCount).to.equal(2);
           expect(listenerSpy4.callCount).to.equal(2);
 
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myNameSpace).to.be.undefined;
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
-          expect(view.externalSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myNameSpace).to.be.undefined;
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
+          expect(view.subscriptions.external[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
         });
 
         xdescribe('validate arguments', function () {

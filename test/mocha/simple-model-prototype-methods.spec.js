@@ -393,7 +393,7 @@
           expect(onSpy2.callCount).to.equal(0);
           expect(onSpy3.callCount).to.equal(0);
 
-          expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(0);
+          expect(model.subscriptions.internal[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(0);
         });
 
         it('removes all non-namespaced subscribers to a specific datum update', function () {
@@ -407,7 +407,7 @@
           model.on(options, onSpy3);
 
           // TODO: THIS ASSERTION DOESN'T BELONG HERE
-          expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo'].unNameSpaced).to.have.length(3);
+          expect(model.subscriptions.internal[EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo'].unNameSpaced).to.have.length(3);
 
           model.off(options);
 
@@ -419,7 +419,7 @@
           expect(onSpy2.callCount).to.equal(0);
           expect(onSpy3.callCount).to.equal(0);
 
-          expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo'].unNameSpaced).to.have.length(0);
+          expect(model.subscriptions.internal[EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo'].unNameSpaced).to.have.length(0);
         });
 
         it('selectively removes only subscribers belonging to a given namespace out of many to a general datum update', function () {
@@ -443,9 +443,9 @@
           }, onSpy4);
 
           // TODO: THESE ASSERTIONs DON'T BELONG HERE
-          expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myNameSpace).to.have.length(2);
-          expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
-          expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
+          expect(model.subscriptions.internal[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myNameSpace).to.have.length(2);
+          expect(model.subscriptions.internal[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
+          expect(model.subscriptions.internal[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
 
           model.off({
             eventType: EVENT_TYPES.DATUM_UPDATE,
@@ -461,9 +461,9 @@
           expect(onSpy3.callCount).to.equal(2);
           expect(onSpy4.callCount).to.equal(2);
 
-          expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myNameSpace).to.be.undefined;
-          expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
-          expect(model.selfSubscriptions[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
+          expect(model.subscriptions.internal[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myNameSpace).to.be.undefined;
+          expect(model.subscriptions.internal[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
+          expect(model.subscriptions.internal[EVENT_TYPES.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
         });
 
         xit('validates arguments', function () {
