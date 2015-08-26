@@ -8,14 +8,16 @@ This is intended to be a lightweight Model View library, inspired by BackboneJS 
 
 It's being built as a learning exercise and in all likelyhood you'll be better off using Backbone, but perhaps you'll find it useful.
 
-**Warning!**
+**[Current tasks on Trello](https://trello.com/b/mZkBqF8w/simple-mv)**
 
+**Warning!**
 It's currently very much a work in progress and does not deserve a version number yet. If you use it, it will probably destroy your code and post a flaming turd through your letterbox.
 
 ## Set up
 
 ```js
-npm install simple-mv --save-dev // this won't work, as it's not in the NPM registery yet...
+// this won't work, as it's not in the NPM registery yet...
+npm install simple-mv --save-dev
 ```
 
 ## Concepts
