@@ -61,7 +61,7 @@
 
         describe('binding a whole single model to the whole view data parameter', function () {
           it('view data reflects state of model with no data', function () {
-            view.bind({model: model});
+            view.bind({target: model});
             expect(view.data).to.deep.equal({});
           });
 
@@ -69,7 +69,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({model: model});
+            view.bind({target: model});
 
             expect(view.data).to.deep.equal({
               foo: 'boo',
@@ -81,7 +81,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({model: model});
+            view.bind({target: model});
 
             model.set('foo', 'hoo');
             model.set('bar', 'far');
@@ -96,7 +96,7 @@
         describe('binding a whole model to a named view data parameter', function () {
           it('view data reflects state of model with no data', function () {
             view.bind({
-              model: model,
+              target: model,
               viewDatum: 'foo'
             });
 
@@ -108,7 +108,7 @@
             model.set('bar', 'car');
 
             view.bind({
-              model: model,
+              target: model,
               viewDatum: 'woo'
             });
 
@@ -125,7 +125,7 @@
             model.set('bar', 'car');
 
             view.bind({
-              model: model,
+              target: model,
               viewDatum: 'woo'
             });
 
@@ -144,8 +144,8 @@
         describe('binding a named model datum to the whole view data parameter', function () {
           it('view data reflects state of model with no data', function () {
             view.bind({
-              model: model,
-              modelDatum: 'foo'
+              target: model,
+              targetDatum: 'foo'
             });
 
             expect(view.data).to.deep.equal({
@@ -158,8 +158,8 @@
             model.set('bar', 'car');
 
             view.bind({
-              model: model,
-              modelDatum: 'foo'
+              target: model,
+              targetDatum: 'foo'
             });
 
             expect(view.data).to.deep.equal({
@@ -172,8 +172,8 @@
             model.set('bar', 'car');
 
             view.bind({
-              model: model,
-              modelDatum: 'foo'
+              target: model,
+              targetDatum: 'foo'
             });
 
             model.set('foo', 'hoo');
@@ -188,8 +188,8 @@
         describe('binding a named model datum to a named view data parameter', function () {
           it('view data reflects state of model with no data', function () {
             view.bind({
-              model: model,
-              modelDatum: 'foo',
+              target: model,
+              targetDatum: 'foo',
               viewDatum: 'woo'
             });
 
@@ -203,8 +203,8 @@
             model.set('bar', 'car');
 
             view.bind({
-              model: model,
-              modelDatum: 'foo',
+              target: model,
+              targetDatum: 'foo',
               viewDatum: 'woo'
             });
 
@@ -218,8 +218,8 @@
             model.set('bar', 'car');
 
             view.bind({
-              model: model,
-              modelDatum: 'foo',
+              target: model,
+              targetDatum: 'foo',
               viewDatum: 'woo'
             });
 
@@ -263,12 +263,12 @@
 
         it('callback assigned to general datum update event is called with expected params', function () {
           var callbackParams1 = {
-                model: model,
+                target: model,
                 keypath: 'foo',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               },
               callbackParams2 = {
-                model: model,
+                target: model,
                 keypath: 'waa',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               };
@@ -290,12 +290,12 @@
 
         it('callback assigned to general datum update event with specified namespace is called with expected arguments', function () {
           var callbackParams1 = {
-                model: model,
+                target: model,
                 keypath: 'foo',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               },
               callbackParams2 = {
-                model: model,
+                target: model,
                 keypath: 'waa',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               };
@@ -318,7 +318,7 @@
 
         it('callback assigned to named datum update event is called with expected params', function () {
           var callbackParams = {
-                model: model,
+                target: model,
                 keypath: 'foo',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               };
@@ -340,7 +340,7 @@
 
         it('callback assigned to named datum update event with specified namespace is called with expected arguments', function () {
           var callbackParams = {
-                model: model,
+                target: model,
                 keypath: 'foo',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               };

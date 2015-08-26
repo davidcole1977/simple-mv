@@ -270,12 +270,12 @@
 
         it('callback assigned to general datum update event is called with expected params', function () {
           var callbackParams1 = {
-                model: model,
+                target: model,
                 keypath: 'foo',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               },
               callbackParams2 = {
-                model: model,
+                target: model,
                 keypath: 'waa',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               };
@@ -296,12 +296,12 @@
 
         it('callback assigned to general datum update event with specified namespace is called with expected arguments', function () {
           var callbackParams1 = {
-                model: model,
+                target: model,
                 keypath: 'foo',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               },
               callbackParams2 = {
-                model: model,
+                target: model,
                 keypath: 'waa',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               };
@@ -323,7 +323,7 @@
 
         it('callback assigned to named datum update event is called with expected params', function () {
           var callbackParams = {
-                model: model,
+                target: model,
                 keypath: 'foo',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               };
@@ -343,7 +343,7 @@
 
         it('callback assigned to named datum update event with specified namespace is called with expected arguments', function () {
           var callbackParams = {
-                model: model,
+                target: model,
                 keypath: 'foo',
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               };

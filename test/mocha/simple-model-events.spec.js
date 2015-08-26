@@ -44,7 +44,7 @@
         it('pubsub instance receives datum create event with expected args when datum created using set()', function () {
           var publishParams = {
                 keypath: 'foo',
-                model: model,
+                target: model,
                 eventType: EVENTS.MODEL.DATUM_CREATE
               },
               topics = [
@@ -65,7 +65,7 @@
         it('pubsub instance receives datum update event with expected args when datum updated using set()', function () {
           var publishParams = {
                 keypath: 'foo',
-                model: model,
+                target: model,
                 eventType: EVENTS.MODEL.DATUM_UPDATE
               },
               topics = [
@@ -94,7 +94,7 @@
         it('pubsub instance receives datum remove event with expected args when datum updated using remove()', function () {
           var publishParams = {
                 keypath: 'foo',
-                model: model,
+                target: model,
                 eventType: EVENTS.MODEL.DATUM_REMOVE
               },
               topics = [
