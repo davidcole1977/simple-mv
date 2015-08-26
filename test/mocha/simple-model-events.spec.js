@@ -88,7 +88,7 @@
           });
         });
 
-        it.only('pubsub instance does not receive update event when set() is called with existing value', function () {
+        it('pubsub instance does not receive update event when set() is called with existing value', function () {
           var topics = [
                 EVENTS.MODEL.DATUM_UPDATE,
                 EVENTS.MODEL.DATUM_UPDATE + ':' + model.id,
