@@ -8,6 +8,8 @@ This is intended to be a lightweight Model View library, inspired by BackboneJS 
 
 It's being built as a learning exercise and in all likelyhood you'll be better off using Backbone, but perhaps you'll find it useful.
 
+**Warning!**
+
 It's currently very much a work in progress and does not deserve a version number yet. If you use it, it will probably destroy your code and post a flaming turd through your letterbox.
 
 ## Set up
@@ -15,6 +17,16 @@ It's currently very much a work in progress and does not deserve a version numbe
 ```js
 npm install simple-mv --save-dev // this won't work, as it's not in the NPM registery yet...
 ```
+
+## Concepts
+
+### Like BackboneJS, but... well, like BackboneJS
+
+### Models, collections & views
+
+### Custom components
+
+### Events
 
 ## API
 
@@ -179,6 +191,23 @@ TBC...
 
 [Trello simple-mv board](https://trello.com/b/mZkBqF8w/simple-mv)
 
+### Next up:
+
+objects as children of other objects
+
+model events bubble up to parent models / collections automatically. parent models subscribe to all child model events when initially added set(), and unsubscribe when remove()d. events naming config needs a tweak:
+
+```js
+EVENT_TYPES: {
+  MODEL: {
+    DATUM_UPDATE: ''
+  },
+  VIEW: {
+    // etc.
+  }
+}
+```
+
 * Model
 	* save() and fetch() methods with associated events & callbacks
 	* local storage and/or indexedDB store and fetch 'plugins'
@@ -218,7 +247,7 @@ TBC...
 * Ensure all pubsub subscriptions are tidied up when components are removed
 * Refactor unit tests for efficiency, taking into account recent refactoring – test generic prototype tasks and module methods in detail in separate tests (eg. events, create, extend) and do only essential further testing in specific modules (eg. model, view, collection)
 
-## Names...
+## Names... (the DIFFICULT part)
 
 * Mortar
 * Copper
@@ -234,23 +263,3 @@ TBC...
 * Mario / Luigi (plumber)
 * Armature
 * Animal / plant names
-
-## Pubsub topics (events) definitions
-
-*To be implemented...*
-
-```js
-event_type[:component_id[:datum_name]]
-
-eg.
-update_datum
-create_model:model_12
-remove_datum:model_9:my_datum_name
-
-  EVENT_TYPES: {
-    MODEL_CREATE: 'create-model',
-    DATUM_UPDATE: 'update-datum',
-    DATUM_CREATE: 'create-datum',
-    DATUM_REMOVE: 'remove-datum'
-  }
-```

@@ -8,7 +8,7 @@
       appSubsLists = require(utHelpers.getModulePath('./app-subscriptions')),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
       GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
-      EVENT_TYPES = GLOBAL_CONFIG.EVENT_TYPES,
+      EVENTS = GLOBAL_CONFIG.EVENTS,
       isString = function (value) { return typeof value === 'string'; },
       hasLengthOfFour = function (value) { return value.length === 4; },
       hasLengthOfFourMsg = 'the length should be four',
@@ -45,12 +45,12 @@
           var publishParams = {
                 keypath: 'foo',
                 model: model,
-                eventType: EVENT_TYPES.DATUM_CREATE
+                eventType: EVENTS.MODEL.DATUM_CREATE
               },
               topics = [
-                EVENT_TYPES.DATUM_CREATE,
-                EVENT_TYPES.DATUM_CREATE + ':' + model.id,
-                EVENT_TYPES.DATUM_CREATE + ':' + model.id + ':foo',
+                EVENTS.MODEL.DATUM_CREATE,
+                EVENTS.MODEL.DATUM_CREATE + ':' + model.id,
+                EVENTS.MODEL.DATUM_CREATE + ':' + model.id + ':foo',
               ];
 
           model.set('foo', 'bar');
@@ -66,12 +66,12 @@
           var publishParams = {
                 keypath: 'foo',
                 model: model,
-                eventType: EVENT_TYPES.DATUM_UPDATE
+                eventType: EVENTS.MODEL.DATUM_UPDATE
               },
               topics = [
-                EVENT_TYPES.DATUM_UPDATE,
-                EVENT_TYPES.DATUM_UPDATE + ':' + model.id,
-                EVENT_TYPES.DATUM_UPDATE + ':' + model.id + ':foo',
+                EVENTS.MODEL.DATUM_UPDATE,
+                EVENTS.MODEL.DATUM_UPDATE + ':' + model.id,
+                EVENTS.MODEL.DATUM_UPDATE + ':' + model.id + ':foo',
               ];
 
           model.set('foo', 'bar');
@@ -95,12 +95,12 @@
           var publishParams = {
                 keypath: 'foo',
                 model: model,
-                eventType: EVENT_TYPES.DATUM_REMOVE
+                eventType: EVENTS.MODEL.DATUM_REMOVE
               },
               topics = [
-                EVENT_TYPES.DATUM_REMOVE,
-                EVENT_TYPES.DATUM_REMOVE + ':' + model.id,
-                EVENT_TYPES.DATUM_REMOVE + ':' + model.id + ':foo',
+                EVENTS.MODEL.DATUM_REMOVE,
+                EVENTS.MODEL.DATUM_REMOVE + ':' + model.id,
+                EVENTS.MODEL.DATUM_REMOVE + ':' + model.id + ':foo',
               ];
 
           model.set('foo', 'bar');

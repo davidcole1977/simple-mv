@@ -7,7 +7,7 @@
       module = require(utHelpers.getModulePath('simple-model')),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
       GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
-      EVENT_TYPES = GLOBAL_CONFIG.EVENT_TYPES,
+      EVENTS = GLOBAL_CONFIG.EVENTS,
       isString = function (value) { return typeof value === 'string'; },
       hasLengthOfFour = function (value) { return value.length === 4; },
       hasLengthOfFourMsg = 'the length should be four',
