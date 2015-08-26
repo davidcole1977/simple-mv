@@ -15,16 +15,19 @@ It's currently very much a work in progress and does not deserve a version numbe
 
 ## Set up
 
-```js
-// this won't work, as it's not in the NPM registery yet...
-npm install simple-mv --save-dev
-```
-
 ## Concepts
 
 ### Like BackboneJS, but... well, like BackboneJS
 
-### Models, collections & views
+### Models
+
+### Collections
+
+### Views
+
+Views are very dumb. Simple MV is designed to allow you to use whatever view / templating / rendering library you like, so it gives you what you need to feed data into your view and communicate with models and collections – and no more. How views are constructed and rendered is entirely up to you, although SimpleMV will probably play particularly well with React, Ractive and Knockout.
+
+Other than methods for listening for changes to models and collections, one thing views do provide is data binding. You can set your view data (viewmodel) to automatically update when specific data is updated in your models and collections.
 
 ### Custom components
 
@@ -264,4 +267,19 @@ EVENT_TYPES: {
 * (need to get a bit esoteric...)
 * Mario / Luigi (plumber)
 * Armature
-* Animal / plant names
+* glass (art / construction material, transparency)
+* prism
+* glaze
+* chops (nickname, not on NPM!)
+* cacao (because I like chocolate)
+* chocolatl
+* criollo
+* conche (NPM available)
+* Couverture (NPM available)
+* temper
+* mortise (mortise lock (key), mortise and tenon joint)
+* dowel
+* mitre
+* dovetail
+* tongueandgroove
+* domino

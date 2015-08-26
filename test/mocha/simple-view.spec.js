@@ -51,7 +51,7 @@
         });
       });
 
-      describe('bind()', function () {
+      describe('bindData()', function () {
         var view, model;
 
         beforeEach(function () {
@@ -61,7 +61,7 @@
 
         describe('binding a whole single model to the whole view data parameter', function () {
           it('view data reflects state of model with no data', function () {
-            view.bind({target: model});
+            view.bindData({target: model});
             expect(view.data).to.deep.equal({});
           });
 
@@ -69,7 +69,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({target: model});
+            view.bindData({target: model});
 
             expect(view.data).to.deep.equal({
               foo: 'boo',
@@ -81,7 +81,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({target: model});
+            view.bindData({target: model});
 
             model.set('foo', 'hoo');
             model.set('bar', 'far');
@@ -91,11 +91,27 @@
               bar: 'far'
             });
           });
+
+          it('view data updates when model datums are created (bound before model datums exist)', function () {
+            view.bindData({target: model});
+
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            expect(view.data).to.deep.equal({
+              foo: 'boo',
+              bar: 'car'
+            });
+          });
+
+          xit('what happens when a datum is removed?', function () {
+
+          });
         });
 
         describe('binding a whole model to a named view data parameter', function () {
           it('view data reflects state of model with no data', function () {
-            view.bind({
+            view.bindData({
               target: model,
               viewDatum: 'foo'
             });
@@ -107,7 +123,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({
+            view.bindData({
               target: model,
               viewDatum: 'woo'
             });
@@ -124,7 +140,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({
+            view.bindData({
               target: model,
               viewDatum: 'woo'
             });
@@ -139,11 +155,32 @@
               }
             });
           });
+
+          it('view data updates when model datums are created (bound before model datums exist)', function () {
+            view.bindData({
+              target: model,
+              viewDatum: 'woo'
+            });
+
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            expect(view.data).to.deep.equal({
+              woo: {
+                foo: 'boo',
+                bar: 'car'
+              }
+            });
+          });
+
+          xit('what happens when a datum is removed?', function () {
+
+          });
         });
 
         describe('binding a named model datum to the whole view data parameter', function () {
           it('view data reflects state of model with no data', function () {
-            view.bind({
+            view.bindData({
               target: model,
               targetDatum: 'foo'
             });
@@ -157,7 +194,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({
+            view.bindData({
               target: model,
               targetDatum: 'foo'
             });
@@ -171,7 +208,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({
+            view.bindData({
               target: model,
               targetDatum: 'foo'
             });
@@ -183,11 +220,29 @@
               foo: 'hoo'
             });
           });
+
+          it('view data updates when model datums are created (bound before model datums exist)', function () {
+            view.bindData({
+              target: model,
+              targetDatum: 'foo'
+            });
+
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            expect(view.data).to.deep.equal({
+              foo: 'boo'
+            });
+          });
+
+          xit('what happens when a datum is removed?', function () {
+
+          });
         });
 
         describe('binding a named model datum to a named view data parameter', function () {
           it('view data reflects state of model with no data', function () {
-            view.bind({
+            view.bindData({
               target: model,
               targetDatum: 'foo',
               viewDatum: 'woo'
@@ -202,7 +257,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({
+            view.bindData({
               target: model,
               targetDatum: 'foo',
               viewDatum: 'woo'
@@ -217,7 +272,7 @@
             model.set('foo', 'boo');
             model.set('bar', 'car');
 
-            view.bind({
+            view.bindData({
               target: model,
               targetDatum: 'foo',
               viewDatum: 'woo'
@@ -230,6 +285,35 @@
               woo: 'hoo'
             });
           });
+
+          it('view data updates when model datums are created (bound before model datums exist)', function () {
+            view.bindData({
+              target: model,
+              targetDatum: 'foo',
+              viewDatum: 'woo'
+            });
+
+            model.set('foo', 'boo');
+            model.set('bar', 'car');
+
+            expect(view.data).to.deep.equal({
+              woo: 'boo'
+            });
+          });
+
+          xit('what happens when a datum is removed?', function () {
+
+          });
+        });
+
+        xdescribe('unbindData()', function () {
+          it('stuff', function () {
+          
+          });
+
+          it('cleans up subscriptions', function () {
+          
+          });
         });
 
         xdescribe('validate arguments', function () {
@@ -238,7 +322,7 @@
           });
         });
         
-      }); // describe('bind()', function () {
+      }); // describe('bindData()', function () {
 
       describe('on()', function () {
         it('make sure it works with stuff unique to views and not just models', function () {
