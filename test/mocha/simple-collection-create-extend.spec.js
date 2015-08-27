@@ -22,18 +22,6 @@
       });
     });
 
-    xdescribe('prototype methods', function () {
-      it('stuff', function () {
-
-      });
-    });
-
-    xdescribe('collection events', function () {
-      it('stuff', function () {
-
-      });
-    });
-
   });
 
 })();

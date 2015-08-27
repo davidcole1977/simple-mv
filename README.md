@@ -254,6 +254,31 @@ EVENT_TYPES: {
 
 ## Names... (the DIFFICULT part)
 
+### Available on npmjs.com
+
+* stickleback
+* mortise (mortise lock (key), mortise and tenon joint)
+* gaffertape
+* dowel
+* chops (nickname)
+* chocolatl (I Like chocolate, ok?)
+* thatch
+* wicker
+* noose (from rope / knot, tieing things together)
+* staircase
+* stickle (from stickle bricks, simple construction, glue)
+* stein (stone, brick)
+* arbeit (work)
+* nori (japanese for glue)
+* tatami
+* gigathor
+* wiffwaff
+
+### Not available on npmjs.com
+
+* clamp
+* Bamboo
+* Balsa
 * Mortar
 * Copper
 * Plumber
@@ -270,16 +295,15 @@ EVENT_TYPES: {
 * glass (art / construction material, transparency)
 * prism
 * glaze
-* chops (nickname, not on NPM!)
 * cacao (because I like chocolate)
-* chocolatl
-* criollo
-* conche (NPM available)
-* Couverture (NPM available)
 * temper
-* mortise (mortise lock (key), mortise and tenon joint)
-* dowel
 * mitre
 * dovetail
-* tongueandgroove
 * domino
+* ziptie
+* lattice
+* catwalk (somewhere your models live. Getit?)
+* bowline
+* quokka
+* escher
+* ziggurat

@@ -12,36 +12,6 @@
 
   
   describe('simple-view', function () {
-    
-    describe('create()', function () {
-      xit('stuff', function () {
-
-      });
-
-      it('view created has an ID attribute that is different from the previous view created', function () {
-        var view1 = module.create(),
-            view2 = module.create();
-
-        expect(view1.id).to.have.length.above(0);
-        expect(view1.id).to.not.equal(view2.id);
-      });
-
-      describe('options', function () {
-        xit('default data', function () {
-
-        });
-      });
-
-      describe('custom parameters and methods', function () {
-
-      });
-    });
-
-    describe('extend', function () {
-      xit('stuff', function () {
-
-      });
-    });
 
     describe('prototype methods', function () {
 
