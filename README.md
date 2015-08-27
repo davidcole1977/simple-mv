@@ -25,7 +25,7 @@ It's currently very much a work in progress and does not deserve a version numbe
 
 ### Views
 
-Views are very dumb. Simple MV is designed to allow you to use whatever view / templating / rendering library you like, so it gives you what you need to feed data into your view and communicate with models and collections – and no more. How views are constructed and rendered is entirely up to you, although SimpleMV will probably play particularly well with React, Ractive and Knockout.
+Views are very dumb and know nothing of templating, the browser DOM. Simple MV is designed to allow you to use whatever view / templating / rendering library you like, so it gives you what you need to feed data into your view and communicate with models and collections – and no more.
 
 Other than methods for listening for changes to models and collections, one thing views do provide is data binding. You can set your view data (viewmodel) to automatically update when specific data is updated in your models and collections.
 

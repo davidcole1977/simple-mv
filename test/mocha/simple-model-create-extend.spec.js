@@ -137,7 +137,7 @@
       });
     });
 
-    describe('extend', function () {
+    describe('extend()', function () {
       sharedExtendSpec.generalTests();
       sharedExtendSpec.optionsInputValidation();
     });

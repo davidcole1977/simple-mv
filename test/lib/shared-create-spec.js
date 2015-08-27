@@ -1,8 +1,11 @@
 /*
 global
+  xdescribe:false,
   describe:false,
   it:false,
-  xit:false
+  xit:false,
+  beforeEach:false,
+  afterEach:false
 */
 
 'use strict';
