@@ -6,6 +6,7 @@
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-component')),
       sharedCreateSpec = require('../lib/shared-create-spec.js')(module),
+      sharedExtendSpec = require('../lib/shared-extend-spec.js')(module),
       GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
       EVENTS = GLOBAL_CONFIG.EVENTS;
 
@@ -34,13 +35,12 @@
         });  
 
       });
-      
+
     });
 
-    xdescribe('extend', function () {
-      it('stuff', function () {
-
-      });
+    describe('extend', function () {
+      sharedExtendSpec.generalTests();
+      sharedExtendSpec.optionsInputValidation();
     });
 
   });

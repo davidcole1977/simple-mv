@@ -6,6 +6,7 @@
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-model')),
       sharedCreateSpec = require('../lib/shared-create-spec.js')(module),
+      sharedExtendSpec = require('../lib/shared-extend-spec.js')(module),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
       GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
       EVENTS = GLOBAL_CONFIG.EVENTS,
@@ -137,56 +138,8 @@
     });
 
     describe('extend', function () {
-      it('returns an object with a create method', function () {
-        var myModelClass = module.extend({});
-        expect(myModelClass.create).to.be.a('function');
-      });
-
-      it('Two models created using a given extend() return object share the same prototype', function () {
-        var myModelClass = module.extend({}),
-            myModelInstance1 = myModelClass.create(),
-            myModelInstance2 = myModelClass.create();
-
-        expect(Object.getPrototypeOf(myModelInstance1)).to.deep.equal(Object.getPrototypeOf(myModelInstance2));
-      });
-
-      it('Two models created using a given extend() return object share the same custom options and override options', function () {
-        var saver = function saver () {},
-            customOptions = {
-              data: {foo: 'bar', woo: 999},
-              saver: saver,
-              customObj: {stuff: 'bother'},
-              customArray: [1,2,3,4,5]
-            },
-            myModelClass,
-            myModelInstance1,
-            myModelInstance2;
-
-        myModelClass = module.extend(customOptions);
-        myModelInstance1 = myModelClass.create();
-        myModelInstance2 = myModelClass.create();
-
-        expect(myModelInstance1.data).to.deep.equal(myModelInstance2.data);
-        expect(myModelInstance1.saver).to.deep.equal(myModelInstance2.saver);
-        expect(myModelInstance1.customObj).to.deep.equal(myModelInstance2.customObj);
-        expect(myModelInstance1.customArray).to.deep.equal(myModelInstance2.customArray);
-      });
-
-      it('Two models created using a given extend() return object each have unique IDs', function () {
-        var myModelClass = module.extend({}),
-            myModelInstance1 = myModelClass.create(),
-            myModelInstance2 = myModelClass.create();
-
-        expect(myModelInstance1.id).to.not.equal(myModelInstance2.id);
-      });
-
-      it('throws error if first argument is not an object', function () {
-        expect(module.extend.bind(null)).to.throw(Error);
-
-        utHelpers.everyThingExceptObject.forEach(function(notAnObject) {
-          expect(module.extend.bind(null, notAnObject)).to.throw(Error);
-        });
-      });
+      sharedExtendSpec.generalTests();
+      sharedExtendSpec.optionsInputValidation();
     });
 
   });
