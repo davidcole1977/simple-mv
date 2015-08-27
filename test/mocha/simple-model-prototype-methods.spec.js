@@ -145,6 +145,13 @@
           expect(model.validatorsMap.foo).to.deep.equal(['isString', 'hasLengthOfFour']);
         });
 
+        it('only assigns the same validator once', function () {
+          model.assignValidator('foo', 'isString');
+          model.assignValidator('foo', 'isString');
+          model.assignValidator('foo', 'isString');
+          expect(model.validatorsMap.foo).to.deep.equal(['isString']);
+        });
+
         xit('assigns multiple validator objects to a datum keypath (second argument is array)', function () {
 
         });
