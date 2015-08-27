@@ -5,6 +5,7 @@
       sinon = require('sinon'),
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-model')),
+      sharedCreateSpec = require('../lib/shared-create-spec.js')(module),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
       GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
       EVENTS = GLOBAL_CONFIG.EVENTS,
@@ -28,33 +29,13 @@
   describe('simple-model', function () {
     
     describe('create()', function () {
-      xit('stuff', function () {
 
-      });
-
-      it('model created has an ID attribute that is different from the previous model created', function () {
-        var model1 = module.create(),
-            model2 = module.create();
-
-        expect(model1.id).to.have.length.above(0);
-        expect(model1.id).to.not.equal(model2.id);
-      });
+      sharedCreateSpec.createdIDsAreDifferent();
 
       describe('overriding and extending built in parameters / options', function () {
 
         describe('initialise', function () {
-          it('function called when model created', function () {
-            var initSpy = sinon.spy(),
-                model = module.create({
-                  initialise: initSpy
-                });
-
-            expect(initSpy.calledOnce).to.be.true;
-          });  
-
-          xit('can be used to set custom parameters on the model', function () {
-
-          });
+          sharedCreateSpec.initialiseOption();
         });  
 
         describe('validateOnSet', function () {
@@ -133,70 +114,23 @@
         });
 
         describe('saver', function () {
-          it('has null value if not explicitly set', function () {
-            var model = module.create();
-            expect(model.saver).to.equal(null);
-          });
-
-          it('overwites built in parameter', function () {
-            var saverOption = function () {},
-                model = module.create({
-                  saver: saverOption
-                });
-
-            expect(model.saver).to.equal(saverOption);
-          });
+          sharedCreateSpec.saverOption();
         });
 
         describe('fetcher', function () {
-          it('has null value if not explicitly set', function () {
-            var model = module.create();
-            expect(model.fetcher).to.equal(null);
-          });
-
-          it('overwites built in parameter', function () {
-            var fetcherOption = function () {},
-                model = module.create({
-                  fetcher: fetcherOption
-                });
-                
-            expect(model.fetcher).to.equal(fetcherOption);
-          });
+          sharedCreateSpec.fetcherOption();
         });
 
         describe('custom parameters', function () {
-          it('assigns arbitrary custom parameters to model', function () {
-            var customParams = {
-                  foo: 'boo',
-                  cow: [1,2,3,4,5,6,7],
-                  faa: function () {}
-                },
-                model = module.create(customParams);
-
-            expect(model.foo).to.deep.equal(customParams.foo);
-            expect(model.cow).to.deep.equal(customParams.cow);
-            expect(model.faa).to.deep.equal(customParams.faa);
-          });
+          sharedCreateSpec.customParameters();
         });
 
         describe('validate options input', function () {
-          var modelPrototype = Object.getPrototypeOf(module.create()),
-              protectedParams = Object.keys(modelPrototype);
-
-          function testProtectedParamOverride (paramName) {
-            it('throws error if attempts to override protoype param "' + paramName + '"', function () {
-              var options = {};
-                  options[paramName] = function () {};
-
-              expect(module.create.bind(null, options)).to.throw(Error);
-            });
-          }
-
           xit('stuff', function () {
 
           });
 
-          protectedParams.forEach(testProtectedParamOverride);
+          sharedCreateSpec.validateOptionsInput();
         });  
 
       });
