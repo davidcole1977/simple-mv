@@ -146,6 +146,26 @@
           expect(model.data.foo).to.be.null;
         });
 
+        xit('sets nested value by keypath: value in object (parameter already exists)', function () {
+
+        });
+
+        xit('sets deeply nested value by keypath: value in shallow array (parameter already exists)', function () {
+
+        });
+
+        xit('sets deeply nested value by keypath: object within array within object (parameter already exists)', function () {
+
+        });
+
+        xit('sets deeply nested value by keypath and creates intermediate objects & arrays that don\'t exist', function () {
+
+        });
+
+        xit('sets deeply nested value by keypath, creating intermediate objects & arrays that don\'t exist, leaving all preexisting arrays and objects unaltered', function () {
+
+        });
+
         xit('returns without setting the datum value or emitting any update events if the value has not changed', function () {
           
         });
@@ -164,14 +184,6 @@
           model.set('foo', 'bar');
           expect(model.set.bind(model, 'foo', 999)).to.throw(Error);
           expect(model.get('foo')).to.equal('bar');
-        });
-
-        it('sets deeply nested value by keypath', function () {
-
-        });
-
-        it('sets deeply nested value by keypath, creating intermediate levels of ancestry if necessary', function () {
-
         });
 
         it('throws an error if no arguments are received', function () {
