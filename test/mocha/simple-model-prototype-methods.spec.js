@@ -50,8 +50,40 @@
           expect(model.get('foo')).to.deep.equal({foo: 'bar'});
         });
 
-        xit('gets deeply nested value by keypath', function () {
+        it('gets nested value by keypath: value in object', function () {
+          model.data.how = {
+            now: {
+              brown: 'cow'
+            }
+          };
 
+          expect(model.get('how.now.brown')).to.equal('cow');
+        });
+
+        it('gets deeply nested value by keypath: value in shallow array', function () {
+          model.data.noises = [
+            'baa',
+            'moo',
+            'oink'
+          ];
+
+          expect(model.get('noises.2')).to.equal('oink');
+        });
+
+        it('gets deeply nested value by keypath: object within array within object', function () {
+          model.data.foo = {
+            bar: [
+              'car',
+              'far',
+              {
+                mar: {
+                  tar: 'arr'
+                }
+              }
+            ]
+          };
+
+          expect(model.get('foo.bar.2.mar')).to.deep.equal({tar: 'arr'});
         });
 
         it('throws an error if no arguments are received', function () {
@@ -68,8 +100,32 @@
           expect(model.get.bind(model, '')).to.throw(Error);
         });
 
-        it('throws an error if the key doesn\'t exist in data', function () {
+        it('throws an error if the key doesn\'t exist in data (shallow value)', function () {
           expect(model.get.bind(model, 'foo')).to.throw(Error);
+        });
+
+        it('throws an error if the key doesn\'t exist in data (deep - value within array)', function () {
+          model.data.noises = [
+            'baa',
+            'moo',
+            'oink'
+          ];
+
+          expect(model.get.bind(model, 'noises.3')).to.throw(Error);
+        });
+
+        it('throws an error if the key doesn\'t exist in data (deep - object within array within object)', function () {
+          model.data.foo = {
+            bar: [
+              'car',
+              'far',
+              {
+                mar: 'tar'
+              }
+            ]
+          };
+
+          expect(model.get.bind(model, 'foo.bar.2.nosuchparam')).to.throw(Error);
         });
       });
 
