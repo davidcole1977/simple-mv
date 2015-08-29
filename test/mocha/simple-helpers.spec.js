@@ -104,6 +104,26 @@
       });
     });
 
+    describe('stringContainsOnlyDigits()', function () {
+      var stringContainsOnlyDigits = module.stringContainsOnlyDigits,
+          testParams = {
+            "0": true,
+            "123456789": true,
+            "1.23": false,
+            "1@3": false,
+            "12 ": false,
+            "ab3": false,
+            "12#": false
+          };
+
+      Object.keys(testParams).forEach(function (key) {
+        it('returns ' + testParams[key] + ' for "' + key + '"', function () {
+          expect(stringContainsOnlyDigits(key)).to.equal(testParams[key]);
+        });
+
+      });
+    });
+
   });
 
 })();

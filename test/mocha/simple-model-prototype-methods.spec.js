@@ -129,7 +129,7 @@
         });
       });
 
-      describe('set()', function () {
+      describe.only('set()', function () {
         it('sets the value of a simple string data attribute', function () {
           model.set('foo', 'bar');
           expect(model.data.foo).to.equal('bar');
@@ -146,28 +146,133 @@
           expect(model.data.foo).to.be.null;
         });
 
-        xit('sets nested value by keypath: value in object (parameter already exists)', function () {
-
+        it('sets deep value by keypath: value in object (shallow parameter already exists)', function () {
+          model.data.foo = {};
+          model.set('foo.bar', 'baz');
+          expect(model.data.foo.bar).to.equal('baz');
         });
 
-        xit('sets deeply nested value by keypath: value in shallow array (parameter already exists)', function () {
+        it('sets deep value by keypath: value in object (deep parameter already exists)', function () {
+          var expectedData = {
+                foo: {
+                  'monkey': 'ook',
+                  'bar': 'baz',
+                  'cow': 'moo'
+                }
+              };
 
+          model.data.foo = {
+            'monkey': 'ook',
+            'bar': 'woo',
+            'cow': 'moo'
+          };
+          model.set('foo.bar', 'baz');
+          expect(model.data).to.deep.equal(expectedData);
         });
 
-        xit('sets deeply nested value by keypath: object within array within object (parameter already exists)', function () {
-
+        it('sets deep value by keypath: value in object (no parameters exist)', function () {
+          model.set('foo.bar', 'baz');
+          expect(model.data.foo.bar).to.equal('baz');
         });
 
-        xit('sets deeply nested value by keypath and creates intermediate objects & arrays that don\'t exist', function () {
-
+        it('sets deep value by keypath: value in array in object (no parameters exist)', function () {
+          model.set('foo.bar.3', 'baz');
+          expect(model.data.foo.bar[3]).to.equal('baz');
         });
 
-        xit('sets deeply nested value by keypath, creating intermediate objects & arrays that don\'t exist, leaving all preexisting arrays and objects unaltered', function () {
-
+        it('sets deep value by keypath: value in object in array in object (no parameters exist)', function () {
+          model.set('foo.bar.3.woo', 'baz');
+          expect(model.data.foo.bar[3].woo).to.equal('baz');
         });
 
-        xit('returns without setting the datum value or emitting any update events if the value has not changed', function () {
+        it('sets deep value by keypath: value in shallow array (parameter already exists)', function () {
+          var expectedData = {
+                foo: [
+                  'foo',
+                  'bar',
+                  999,
+                  'woo'
+                ]
+              };
+
+          model.data.foo = [
+            'foo',
+            'bar',
+            'baz',
+            'woo'
+          ];
+
+          model.set('foo.2', 999);
+          expect(model.data).to.deep.equal(expectedData);
+        });
+
+        it.only('sets deep value by keypath: object within array within object, leaving other pre-existing parameters unaltered (parameters already exist)', function () {
+          var expectedData = {
+                foo: [
+                  444,
+                  555,
+                  {
+                    boo: 'hoo',
+                    woo: 'moo',
+                    oops: 'boops'
+                  },
+                  'bar',
+                  999,
+                  'woo'
+                ],
+                bar: [
+                  1,
+                  2,
+                  {
+                    look: 'book'
+                  }
+                ]
+              };
+
+          model.data = {
+            foo: [
+              444,
+              555,
+              {
+                boo: 'hoo',
+                woo: 'coo',
+                oops: 'boops'
+              },
+              'bar',
+              999,
+              'woo'
+            ],
+            bar: [
+              1,
+              2,
+              {
+                look: 'book'
+              }
+            ]
+          };
+
+          model.set('foo.2.woo', 'moo');
+          expect(model.data).to.deep.equal(expectedData);
+        });
+
+        xit('returns without emitting any update events if the value has not changed', function () {
           
+        });
+
+        xit('triggers set datum event with expected arguments when deep datum is created', function () {
+
+        });
+
+        xit('triggers set datum event with expected arguments when deep datum is updated', function () {
+
+        });
+
+        xit('triggers multiple create datum events with expected arguments when deep datum is updated and intermediate keypaths aren\'t pre-existing', function () {
+
+        });
+
+        xit('throws an error is trying to deep set and intermediate datum has non-array (when array is needed) or non-object (when object is needed) value', function () {
+
         });
 
         it('altering the variable originally passed as a value doesn\'t change the stored value', function () {
@@ -184,6 +289,13 @@
           model.set('foo', 'bar');
           expect(model.set.bind(model, 'foo', 999)).to.throw(Error);
           expect(model.get('foo')).to.equal('bar');
+        });
+
+        it('throws error and doesn\'t alter the stored value if validation fails on deep datum', function () {
+          model.assignValidator('foo.bar.woo.hoo', 'isString');
+          model.set('foo.bar.woo.hoo', 'bar');
+          expect(model.set.bind(model, 'foo.bar.woo.hoo', 999)).to.throw(Error);
+          expect(model.get('foo.bar.woo.hoo')).to.equal('bar');
         });
 
         it('throws an error if no arguments are received', function () {
