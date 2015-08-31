@@ -6,6 +6,7 @@
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-model')),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
+      appSubsLists = require(utHelpers.getModulePath('./app-subscriptions')),
       GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
       EVENTS = GLOBAL_CONFIG.EVENTS,
       isString = function (value) { return typeof value === 'string'; },
@@ -129,7 +130,7 @@
         });
       });
 
-      describe.only('set()', function () {
+      describe('set()', function () {
         it('sets the value of a simple string data attribute', function () {
           model.set('foo', 'bar');
           expect(model.data.foo).to.equal('bar');
@@ -206,7 +207,7 @@
           expect(model.data).to.deep.equal(expectedData);
         });
 
-        it.only('sets deep value by keypath: object within array within object, leaving other pre-existing parameters unaltered (parameters already exist)', function () {
+        it('sets deep value by keypath: object within array within object, leaving other pre-existing parameters unaltered (parameters already exist)', function () {
           var expectedData = {
                 foo: [
                   444,
@@ -255,26 +256,6 @@
           expect(model.data).to.deep.equal(expectedData);
         });
 
-        xit('returns without emitting any update events if the value has not changed', function () {
-          
-        });
-
-        xit('triggers set datum event with expected arguments when deep datum is created', function () {
-
-        });
-
-        xit('triggers set datum event with expected arguments when deep datum is updated', function () {
-
-        });
-
-        xit('triggers multiple create datum events with expected arguments when deep datum is updated and intermediate keypaths aren\'t pre-existing', function () {
-
-        });
-
-        xit('throws an error is trying to deep set and intermediate datum has non-array (when array is needed) or non-object (when object is needed) value', function () {
-
-        });
-
         it('altering the variable originally passed as a value doesn\'t change the stored value', function () {
           var original = {foo: 'bar'};
 
@@ -282,6 +263,34 @@
           original.foo = 1000;
 
           expect(model.get('bar').foo).to.equal('bar');
+        });
+
+        it('returns without updating the datum if the shallow value has not changed', function () {
+          var setDeepSpy = sinon.spy(model, 'setDeep');
+
+          model.data.foo = 'bar';
+          model.set('foo', 'bar');
+          
+          expect(setDeepSpy.called).to.be.false;
+        });
+
+        it('returns without updating the datum if the deep value has not changed', function () {
+          var setDeepSpy = sinon.spy(model, 'setDeep');
+
+          model.data.foo = {
+            bar: [
+              'baa',
+              'moo',
+              'oink'
+            ]
+          };
+          model.set('foo.bar.2', 'oink');
+          
+          expect(setDeepSpy.called).to.be.false;
+        });
+
+        xit('throws an error if trying to deep set and intermediate datum has non-array (when array is needed) or non-object (when object is needed) value', function () {
+
         });
 
         it('throws error and doesn\'t alter the stored value if validation fails', function () {

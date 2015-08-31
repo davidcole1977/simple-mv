@@ -17,7 +17,7 @@
       sharedEventsSpec.createAndDestroy();
 
       describe('model-specific events', function () {
-        var model, publishSpy;
+        var model, publishSpy, setDeepSpy;
 
         beforeEach(function () {
           publishSpy = sinon.spy(appSubsLists, 'publish');
@@ -29,7 +29,7 @@
         });
 
         describe('datum create', function () {
-          it('pubsub instance receives datum create event with expected args when datum created using set()', function () {
+          it('pubsub instance receives datum create event with expected arguments when shallow datum is created using set()', function () {
             var publishParams = {
                   keypath: 'foo',
                   target: model,
@@ -47,10 +47,33 @@
               expect(publishSpy.calledWith(topic, publishParams)).to.be.true;
             });
           });
+
+          it('pubsub instance receives datum create event with expected arguments when deep datum is created using set()', function () {
+            var publishParams = {
+                  keypath: 'foo.1.bar',
+                  target: model,
+                  eventType: EVENTS.MODEL.DATUM_CREATE
+                },
+                topics = [
+                  EVENTS.MODEL.DATUM_CREATE,
+                  EVENTS.MODEL.DATUM_CREATE + ':' + model.id,
+                  EVENTS.MODEL.DATUM_CREATE + ':' + model.id + ':foo.1.bar',
+                ];
+
+            model.set('foo.1.bar', 'baz');
+
+            topics.forEach(function (topic) {
+              expect(publishSpy.calledWith(topic, publishParams)).to.be.true;
+            });
+          });
+
+          xit('triggers multiple create datum events with expected arguments when deep datum is updated and intermediate keypaths aren\'t pre-existing', function () {
+
+          });
         });
 
         describe('datum set', function () {
-          it('pubsub instance receives datum update event with expected args when datum updated using set()', function () {
+          it('pubsub instance receives datum set event with expected arguments when shallow datum is updated using set()', function () {
             var publishParams = {
                   keypath: 'foo',
                   target: model,
@@ -70,7 +93,27 @@
             });
           });
 
-          it('pubsub instance does not receive update event when set() is called with existing value', function () {
+          it('pubsub instance receives datum set event with expected arguments when deep datum is updated using set()', function () {
+            var publishParams = {
+                  keypath: 'foo.1.bar',
+                  target: model,
+                  eventType: EVENTS.MODEL.DATUM_UPDATE
+                },
+                topics = [
+                  EVENTS.MODEL.DATUM_UPDATE,
+                  EVENTS.MODEL.DATUM_UPDATE + ':' + model.id,
+                  EVENTS.MODEL.DATUM_UPDATE + ':' + model.id + ':foo.1.bar',
+                ];
+
+            model.set('foo.1.bar', 'baz');
+            model.set('foo.1.bar', 'zap');
+
+            topics.forEach(function (topic) {
+              expect(publishSpy.calledWith(topic, publishParams)).to.be.true;
+            });
+          });
+
+          it('pubsub instance does not receive update event when set() is called with existing value (shallow keypath)', function () {
             var topics = [
                   EVENTS.MODEL.DATUM_UPDATE,
                   EVENTS.MODEL.DATUM_UPDATE + ':' + model.id,
@@ -79,6 +122,21 @@
 
             model.set('foo', 'bar');
             model.set('foo', 'bar');
+
+            topics.forEach(function (topic) {
+              expect(publishSpy.calledWith(topic)).to.be.false;
+            });
+          });
+
+          it('pubsub instance does not receive update event when set() is called with existing value (deep keypath)', function () {
+            var topics = [
+                  EVENTS.MODEL.DATUM_UPDATE,
+                  EVENTS.MODEL.DATUM_UPDATE + ':' + model.id,
+                  EVENTS.MODEL.DATUM_UPDATE + ':' + model.id + ':foo.1.bar',
+                ];
+
+            model.set('foo.1.bar', 'baz');
+            model.set('foo.1.bar', 'baz');
 
             topics.forEach(function (topic) {
               expect(publishSpy.calledWith(topic)).to.be.false;
