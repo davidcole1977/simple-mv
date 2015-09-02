@@ -320,6 +320,45 @@
         it('throws an error if the first argument is a string with zero length', function () {
           expect(model.set.bind(model, '')).to.throw(Error);
         });
+
+        describe('bug fixes', function () {
+          it("\"model.set('foo.bar.1.woo', 'bar');\" sets deep data correctly", function () {
+            var expectedData = {
+                  foo: {
+                    bar: [
+                      null,
+                      {
+                        woo: 'bar'
+                      }
+                    ]
+                  }
+                };
+
+            model.set('foo.bar.1.woo', 'bar');
+            expect(model.data).to.deep.equal(expectedData);
+          });
+
+          it("\"model.set('foo.2.0.woo.1, 'bar');\" sets deep data correctly", function () {
+            var expectedData = {
+                  foo: [
+                    null,
+                    null,
+                    [
+                      {
+                        woo: [
+                          null,
+                          'bar'
+                        ]
+                      }
+                    ]
+                  ]
+                };
+
+            model.set('foo.2.0.woo.1', 'bar');
+            expect(model.data).to.deep.equal(expectedData);
+          });
+        });
+
       });
 
       describe('assignValidator()', function () {
@@ -442,6 +481,35 @@
           expect(model.data.foo).to.be.undefined;
         }); 
 
+        it('deletes a deep array entry', function () {
+          model.data.foo = {
+            woo: [10, 20, 30]
+          };
+
+          model.remove('foo.woo.1');
+          expect(model.data.foo.woo).to.deep.equal([10, 30]);
+        }); 
+
+        it('deletes a deep model attribute', function () {
+          var expectedDeepData = {
+                coo: 'boo'
+              };
+
+          model.data.foo = {
+            woo: [
+              10,
+              {
+                coo: 'boo',
+                too: 'ooh'
+              },
+              30
+            ]
+          };
+
+          model.remove('foo.woo.1.too');
+          expect(model.data.foo.woo[1]).to.deep.equal(expectedDeepData);
+        }); 
+
         it('throws an error if no arguments are received', function () {
           expect(model.remove.bind(model)).to.throw(Error);
         });
@@ -452,8 +520,35 @@
           });
         });
 
-        it('fails silently if attribute to be removed does not exist', function () {
-          expect(model.remove.bind(model, 'fubar')).to.not.throw(Error);
+        it('throws error if shallow attribute to be removed does not exist', function () {
+          expect(model.remove.bind(model, 'fubar')).to.throw(Error);
+        });
+
+        it('throws error and leaves existing data unaltered if deep attribute to be removed does not exist', function () {
+          var expectedData = {
+                foo: {
+                  bar: [
+                    'woo',
+                    {
+                      faa: 'baa'
+                    },
+                    'ooh'
+                  ]
+                }
+              };
+
+          model.data.foo = {
+            bar: [
+              'woo',
+              {
+                faa: 'baa'
+              },
+              'ooh'
+            ]
+          };
+
+          expect(model.remove.bind(model, 'foo.bar.1.too')).to.throw(Error);
+          expect(model.data).to.deep.equal(expectedData);
         });
       });
 

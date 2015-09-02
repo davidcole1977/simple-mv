@@ -124,6 +124,22 @@
       });
     });
 
+    describe('createFilledArray()', function () {
+      var createFilledArray = module.createFilledArray;
+
+      it('creates array [null, null, null, null] when passed args (4, null)', function () {
+        expect(createFilledArray(4, null)).to.deep.equal([null, null, null, null]);
+      });
+
+      it('creates array [[], [], [], []] when passed args (4, [])', function () {
+        expect(createFilledArray(4, [])).to.deep.equal([[], [], [], []]);
+      });
+
+      it('creates array ["foo"] when passed args (1, "foo")', function () {
+        expect(createFilledArray(1, "foo")).to.deep.equal(["foo"]);
+      });
+    });
+
   });
 
 })();

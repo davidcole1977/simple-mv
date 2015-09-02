@@ -145,7 +145,7 @@
         });
 
         describe('datum remove', function () {
-          it('pubsub instance receives datum remove event with expected args when datum updated using remove()', function () {
+          it('pubsub instance receives datum remove event with expected args when shallow datum updated using remove()', function () {
             var publishParams = {
                   keypath: 'foo',
                   target: model,
@@ -159,6 +159,26 @@
 
             model.set('foo', 'bar');
             model.remove('foo');
+
+            topics.forEach(function (topic) {
+              expect(publishSpy.calledWith(topic, publishParams)).to.be.true;
+            });
+          });
+
+          it('pubsub instance receives datum remove event with expected args when deep datum updated using remove()', function () {
+            var publishParams = {
+                  keypath: 'foo.bar.1.woo',
+                  target: model,
+                  eventType: EVENTS.MODEL.DATUM_REMOVE
+                },
+                topics = [
+                  EVENTS.MODEL.DATUM_REMOVE,
+                  EVENTS.MODEL.DATUM_REMOVE + ':' + model.id,
+                  EVENTS.MODEL.DATUM_REMOVE + ':' + model.id + ':foo.bar.1.woo',
+                ];
+
+            model.set('foo.bar.1.woo', 'bar');
+            model.remove('foo.bar.1.woo');
 
             topics.forEach(function (topic) {
               expect(publishSpy.calledWith(topic, publishParams)).to.be.true;
