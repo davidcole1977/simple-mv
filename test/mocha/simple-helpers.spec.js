@@ -140,6 +140,42 @@
       });
     });
 
+    xdescribe('isValidKeypath()', function () {
+      it('stuff', function () {
+
+      });
+    });
+
+    xdescribe('getKeypathDescendentPortion()', function () {
+      it('stuff', function () {
+
+      });
+    });
+
+    describe('keypathIsSameOrDescendent()', function () {
+      var keypathIsSameOrDescendent = module.keypathIsSameOrDescendent;
+
+      it('returns true for identical keypaths', function () {
+        expect(keypathIsSameOrDescendent('foo.1.bar.2.3', 'foo.1.bar.2.3')).to.be.true;
+      });
+
+      it('returns true if keypath2 is descendent of keypath1', function () {
+        expect(keypathIsSameOrDescendent('foo.1.bar.2.3', 'foo.1.bar.2.3.woo.1.doo')).to.be.true;
+      });
+
+      it('returns true if keypath 1 is "*" (wildcard for whole model)', function () {
+        expect(keypathIsSameOrDescendent('*', 'foo.1.bar.2.3')).to.be.true;
+      });
+
+      it('returns false if keypath2 is ancestor of keypath1', function () {
+        expect(keypathIsSameOrDescendent('foo.1.bar.2.3.woo.1.doo', 'foo.1.bar.2.3')).to.be.false;
+      });
+
+      it('returns false if keypath2 and keypath2 share common ancestor, but are otherwise unrelated', function () {
+        expect(keypathIsSameOrDescendent('foo.1.bar.2.3', 'foo.1.woo.2.3')).to.be.false;
+      });
+    });
+
   });
 
 })();

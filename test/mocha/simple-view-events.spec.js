@@ -13,7 +13,7 @@
 
   describe('simple-view', function () {
 
-    describe('view events', function () {
+    xdescribe('view events', function () {
 
       sharedEventsSpec.createAndDestroy();
 
