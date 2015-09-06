@@ -36,8 +36,34 @@ module.exports = function (module) {
       expect(initSpy.calledOnce).to.be.true;
     });  
 
-    xit('can be used to set custom parameters on the component', function () {
+    it('can be used to set custom parameters on the component', function () {
+      var component;
 
+      function init (component) {
+        component.myFunc = function () {};
+        component.myString = 'myString';
+      }
+
+      component = module.create({
+        initialise: init
+      });
+
+      expect(component.myFunc).to.be.a('function');
+      expect(component.myString).to.equal('myString');
+    });
+
+    it('can be used to perform custom actions on the component', function () {
+      var component;
+
+      function init (component) {
+        component.id = 'foobar';
+      }
+
+      component = module.create({
+        initialise: init
+      });
+
+      expect(component.id).to.equal('foobar');
     });
   }
 
@@ -85,6 +111,16 @@ module.exports = function (module) {
       expect(component.foo).to.deep.equal(customParams.foo);
       expect(component.cow).to.deep.equal(customParams.cow);
       expect(component.faa).to.deep.equal(customParams.faa);
+    });
+
+    it('functions assigned as custom parameters have correct this value', function () {
+      var component = module.create({
+        myFunc: function () {
+          return this.id;
+        }
+      });
+
+      expect(component.myFunc()).to.equal(component.id);
     });
   }
 
