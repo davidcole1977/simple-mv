@@ -15,24 +15,6 @@
 
     describe('prototype methods', function () {
 
-      xdescribe('method()', function () {
-        it('stuff', function () {
-        
-        });
-      });
-
-      describe('on()', function () {
-        it('make sure it works with stuff unique to views and not just models', function () {
-
-        });
-      });
-
-      describe('off()', function () {
-        it('make sure it works with stuff unique to views and not just models', function () {
-
-        });
-      });
-
       describe('listenTo()', function () {
         var view, model, listenerSpy;
 
@@ -140,6 +122,105 @@
 
           expect(listenerSpy.calledOnce).to.be.true;
           expect(listenerSpy.calledWith(callbackParams)).to.be.true;
+        });
+
+        it('callback is called when deep datum is updated', function () {
+          var callbackParams = {
+                target: model,
+                keypath: 'foo.boo.doo',
+                eventType: EVENTS.MODEL.DATUM_UPDATE
+              };
+
+          view.listenTo({
+            target: model,
+            eventType: EVENTS.MODEL.DATUM_UPDATE,
+            keypath: 'foo.boo.doo'
+          }, listenerSpy);
+
+          model.set('foo.boo.doo', 'bar');
+          model.set('foo.boo.doo', 'boo');
+          model.set('waa', 'baa');
+          model.set('waa', 'aah');
+
+          expect(listenerSpy.calledOnce).to.be.true;
+          expect(listenerSpy.calledWith(callbackParams)).to.be.true;
+        });
+
+        it('callback is called when delegate option set and deep datum is updated', function () {
+          var callbackParams = {
+                target: model,
+                keypath: 'foo.boo.doo',
+                eventType: EVENTS.MODEL.DATUM_UPDATE
+              };
+
+          view.listenTo({
+            target: model,
+            eventType: EVENTS.MODEL.DATUM_UPDATE,
+            keypath: 'foo.boo.doo',
+            delegate: true
+          }, listenerSpy);
+
+          model.set('foo.boo.doo', 'bar');
+          model.set('foo.boo.doo', 'boo');
+          model.set('waa', 'baa');
+          model.set('waa', 'aah');
+
+          expect(listenerSpy.calledOnce).to.be.true;
+          expect(listenerSpy.calledWith(callbackParams)).to.be.true;
+        });
+
+        it('callback is called when delegate option set and descendent of deep datum is updated', function () {
+          var callbackParams = {
+                target: model,
+                keypath: 'foo.boo.doo.hoo.goo',
+                eventType: EVENTS.MODEL.DATUM_UPDATE
+              };
+
+          view.listenTo({
+            target: model,
+            eventType: EVENTS.MODEL.DATUM_UPDATE,
+            keypath: 'foo.boo.doo',
+            delegate: true
+          }, listenerSpy);
+
+          model.set('foo.boo.doo.hoo.goo', 'bar');
+          model.set('foo.boo.doo.hoo.goo', 'boo');
+          model.set('waa', 'baa');
+          model.set('waa', 'aah');
+
+          expect(listenerSpy.calledOnce).to.be.true;
+          expect(listenerSpy.calledWith(callbackParams)).to.be.true;
+        });
+
+        it('callback is not called when delegate option set and ancestor of deep datum is updated', function () {
+          view.listenTo({
+            target: model,
+            eventType: EVENTS.MODEL.DATUM_UPDATE,
+            keypath: 'foo.boo.doo',
+            delegate: true
+          }, listenerSpy);
+
+          model.set('foo.boo', 'bar');
+          model.set('foo.boo', 'boo');
+          model.set('waa', 'baa');
+          model.set('waa', 'aah');
+
+          expect(listenerSpy.called).to.be.false;
+        });
+
+        it('callback is not called when delegate option not set and descendent of deep datum is updated', function () {
+          view.listenTo({
+            target: model,
+            eventType: EVENTS.MODEL.DATUM_UPDATE,
+            keypath: 'foo.boo.doo'
+          }, listenerSpy);
+
+          model.set('foo.boo.doo.hoo.goo', 'bar');
+          model.set('foo.boo.doo.hoo.goo', 'boo');
+          model.set('waa', 'baa');
+          model.set('waa', 'aah');
+
+          expect(listenerSpy.called).to.be.false;
         });
 
         xdescribe('validate arguments', function () {
@@ -262,6 +343,10 @@
           expect(view.subscriptions.external[EVENTS.MODEL.DATUM_UPDATE + ':' + model.id].myNameSpace).to.be.undefined;
           expect(view.subscriptions.external[EVENTS.MODEL.DATUM_UPDATE + ':' + model.id].myOtherNameSpace).to.have.length(1);
           expect(view.subscriptions.external[EVENTS.MODEL.DATUM_UPDATE + ':' + model.id].unNameSpaced).to.have.length(1);
+        });
+
+        xit('removes the entire topic from subscribers array when no subscriptions to that topic remain', function () {
+
         });
 
         xdescribe('validate arguments', function () {

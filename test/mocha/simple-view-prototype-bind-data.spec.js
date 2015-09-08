@@ -15,13 +15,7 @@
 
     describe('prototype methods', function () {
 
-      xdescribe('method()', function () {
-        it('stuff', function () {
-        
-        });
-      });
-
-      describe('bindData()', function () {
+      xdescribe('bindData()', function () {
         var view, model;
 
         beforeEach(function () {
@@ -826,8 +820,6 @@
 
             model.set('foo.boo.1.hoo.doo', 'boo');
 
-            console.log('assignBoundDataSpy.args[0]', assignBoundDataSpy.args[0]);
-
             expect(assignBoundDataSpy.calledWith('arg.1.2.hoo.doo', 'boo')).to.be.true;
           });
 
@@ -847,16 +839,6 @@
         });
         
       }); // describe('bindData()', function () {
-
-      xdescribe('unbindData()', function () {
-        it('stuff', function () {
-        
-        });
-
-        it('cleans up subscriptions', function () {
-        
-        });
-      });
 
     });
 
