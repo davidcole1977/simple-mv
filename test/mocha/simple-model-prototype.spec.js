@@ -5,6 +5,7 @@
       sinon = require('sinon'),
       utHelpers = require('../lib/unit-test-helpers.js'),
       module = require(utHelpers.getModulePath('simple-model')),
+      sharedListenersSpec = require('../lib/shared-listeners-spec.js')(module),
       modelValidators = require(utHelpers.getModulePath('model-validators')),
       appSubsLists = require(utHelpers.getModulePath('./app-subscriptions')),
       GLOBAL_CONFIG = require(utHelpers.getModulePath('global-config')),
@@ -27,6 +28,10 @@
   });
 
   describe('simple-model', function () {
+
+    describe('eventListeners', function () {
+      sharedListenersSpec.modelEventListening();
+    });
 
     describe('prototype methods', function () {
       var model;
