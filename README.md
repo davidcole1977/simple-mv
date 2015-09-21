@@ -4,14 +4,13 @@
 
 > A basic Javascript Model View library
 
+> **This is not likely to be developed futher. I've realised this isn't the path I want to go down and will instead take the learnings from this and will put them into a simplified set of tools designed to play well with React and similar view libraries. See [https://github.com/davidcole1977/simple-tree/](https://github.com/davidcole1977/simple-tree/). This repo wll be preserved for reference only and is unlikely to ever be in a Production-ready state.**
+
 This is intended to be a lightweight Model View library, inspired by BackboneJS and designed to play well with View libraries such as React, Ractive and Knockout.
 
 It's being built as a learning exercise and in all likelyhood you'll be better off using Backbone, but perhaps you'll find it useful.
 
 **[Current tasks on Trello](https://trello.com/b/mZkBqF8w/simple-mv)**
-
-**Warning!**
-It's currently very much a work in progress and does not deserve a version number yet. If you use it, it will probably destroy your code and post a flaming turd through your letterbox.
 
 ## Set up
 
